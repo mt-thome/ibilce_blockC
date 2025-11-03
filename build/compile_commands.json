@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/mario/computaria/2sem-2025/graphic_computing/ibilce_blockC/build",
+  "command": "/usr/bin/gcc -g -o CMakeFiles/main.exe.dir/main.c.o -c /home/mario/computaria/2sem-2025/graphic_computing/ibilce_blockC/main.c",
+  "file": "/home/mario/computaria/2sem-2025/graphic_computing/ibilce_blockC/main.c",
+  "output": "/home/mario/computaria/2sem-2025/graphic_computing/ibilce_blockC/build/CMakeFiles/main.exe.dir/main.c.o"
+}
+]
