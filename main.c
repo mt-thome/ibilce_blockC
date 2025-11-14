@@ -15,6 +15,7 @@
 #define M_PI 3.14159265358979323846
 #endif
 int rotating=0, timeOfDay=360, skyColor=255;
+<<<<<<< HEAD
 
 // Modelos OBJ carregados
 OBJModel *model_air_cond = NULL;
@@ -27,13 +28,18 @@ OBJModel *model_extintor = NULL;
 OBJModel *model_fan = NULL;
 OBJModel *model_pc = NULL;
 OBJModel *model_toilet = NULL;
+=======
+>>>>>>> refs/remotes/origin/main
 
 void DesenharCena();
 void making_sky();
 void making_sun();
 void making_moon();
+<<<<<<< HEAD
 void load_all_models();
 void free_all_models();
+=======
+>>>>>>> refs/remotes/origin/main
 
 void making_environment();
 void audi_c();
@@ -755,6 +761,7 @@ void block3(){
     
     glPopMatrix();
 }
+<<<<<<< HEAD
 // Carrega todos os modelos OBJ
 void load_all_models() {
     printf("\n=== Carregando modelos OBJ ===\n");
@@ -797,6 +804,8 @@ void free_all_models() {
     free_obj_model(model_toilet);
 }
 
+=======
+>>>>>>> refs/remotes/origin/main
 // Inicializa parmetros de rendering
 void Inicializa(void)
 {
@@ -824,9 +833,12 @@ void Inicializa(void)
     glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
     
+<<<<<<< HEAD
     // Carrega os modelos OBJ
     load_all_models();
     
+=======
+>>>>>>> refs/remotes/origin/main
     glutWarpPointer(400,300);
     glutSetCursor(GLUT_CURSOR_NONE);
 }
@@ -882,6 +894,7 @@ void DesenharCena()
     block1();
     block2();
     block3();
+<<<<<<< HEAD
     
     // Desenha alguns modelos OBJ como exemplo
     // Você pode posicionar e escalar conforme necessário
@@ -915,6 +928,8 @@ void DesenharCena()
         draw_obj_model(model_pc);
         glPopMatrix();
     }
+=======
+>>>>>>> refs/remotes/origin/main
 }
 
 void MOUSE_Button(int botao, int estado, int x, int y)

@@ -1,1 +1,0 @@
-/usr/bin/cc -Wl,--dependency-file=CMakeFiles/meu_programa.dir/link.d CMakeFiles/meu_programa.dir/src.c.o -o meu_programa  /usr/lib/libGL.so /usr/lib/libglut.so -lm /usr/lib/libXmu.so /usr/lib/libXi.so
