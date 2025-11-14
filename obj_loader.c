@@ -44,7 +44,19 @@ OBJModel* load_obj(const char *filename) {
     model->vertices = (Vertex*)malloc(v_count * sizeof(Vertex));
     model->normals = (Normal*)malloc(vn_count * sizeof(Normal));
     model->texcoords = (TexCoord*)malloc(vt_count * sizeof(TexCoord));
-    model->faces = (Face*)malloc(f_count * sizeof(Face));
+    model->faces = (Face*)malloc(f_count * 2 * sizeof(Face)); // *2 para suportar quads
+    
+    // Valida alocações
+    if (!model->vertices || !model->normals || !model->texcoords || !model->faces) {
+        fprintf(stderr, "Erro ao alocar memória para o modelo\n");
+        free(model->vertices);
+        free(model->normals);
+        free(model->texcoords);
+        free(model->faces);
+        free(model);
+        fclose(file);
+        return NULL;
+    }
     
     model->vertex_count = 0;
     model->normal_count = 0;
@@ -75,49 +87,87 @@ OBJModel* load_obj(const char *filename) {
         // Faces
         else if (strncmp(line, "f ", 2) == 0) {
             Face f;
+            int v4 = 0, vt4 = 0, vn4 = 0; // Para quads
             int matches = 0;
             
             // Tenta diferentes formatos de face
-            // Formato: v/vt/vn
-            matches = sscanf(line, "f %d/%d/%d %d/%d/%d %d/%d/%d", 
+            // Formato: v/vt/vn (triângulo ou quad)
+            matches = sscanf(line, "f %d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d", 
                            &f.v[0], &f.vt[0], &f.vn[0],
                            &f.v[1], &f.vt[1], &f.vn[1],
-                           &f.v[2], &f.vt[2], &f.vn[2]);
+                           &f.v[2], &f.vt[2], &f.vn[2],
+                           &v4, &vt4, &vn4);
             
-            if (matches != 9) {
+            if (matches == 9 || matches == 12) {
+                // Formato v/vt/vn detectado
+                model->faces[model->face_count++] = f;
+                
+                // Se é quad, divide em dois triângulos
+                if (matches == 12) {
+                    Face f2;
+                    f2.v[0] = f.v[0]; f2.vt[0] = f.vt[0]; f2.vn[0] = f.vn[0];
+                    f2.v[1] = f.v[2]; f2.vt[1] = f.vt[2]; f2.vn[1] = f.vn[2];
+                    f2.v[2] = v4; f2.vt[2] = vt4; f2.vn[2] = vn4;
+                    model->faces[model->face_count++] = f2;
+                }
+            } else {
                 // Formato: v//vn
-                matches = sscanf(line, "f %d//%d %d//%d %d//%d",
+                matches = sscanf(line, "f %d//%d %d//%d %d//%d %d//%d",
                                &f.v[0], &f.vn[0],
                                &f.v[1], &f.vn[1],
-                               &f.v[2], &f.vn[2]);
-                if (matches == 6) {
+                               &f.v[2], &f.vn[2],
+                               &v4, &vn4);
+                
+                if (matches == 6 || matches == 8) {
                     f.vt[0] = f.vt[1] = f.vt[2] = 0;
+                    model->faces[model->face_count++] = f;
+                    
+                    if (matches == 8) {
+                        Face f2;
+                        f2.v[0] = f.v[0]; f2.vn[0] = f.vn[0]; f2.vt[0] = 0;
+                        f2.v[1] = f.v[2]; f2.vn[1] = f.vn[2]; f2.vt[1] = 0;
+                        f2.v[2] = v4; f2.vn[2] = vn4; f2.vt[2] = 0;
+                        model->faces[model->face_count++] = f2;
+                    }
+                } else {
+                    // Formato: v/vt
+                    matches = sscanf(line, "f %d/%d %d/%d %d/%d %d/%d",
+                                   &f.v[0], &f.vt[0],
+                                   &f.v[1], &f.vt[1],
+                                   &f.v[2], &f.vt[2],
+                                   &v4, &vt4);
+                    
+                    if (matches == 6 || matches == 8) {
+                        f.vn[0] = f.vn[1] = f.vn[2] = 0;
+                        model->faces[model->face_count++] = f;
+                        
+                        if (matches == 8) {
+                            Face f2;
+                            f2.v[0] = f.v[0]; f2.vt[0] = f.vt[0]; f2.vn[0] = 0;
+                            f2.v[1] = f.v[2]; f2.vt[1] = f.vt[2]; f2.vn[1] = 0;
+                            f2.v[2] = v4; f2.vt[2] = vt4; f2.vn[2] = 0;
+                            model->faces[model->face_count++] = f2;
+                        }
+                    } else {
+                        // Formato: v (apenas vértices)
+                        matches = sscanf(line, "f %d %d %d %d",
+                                       &f.v[0], &f.v[1], &f.v[2], &v4);
+                        
+                        if (matches == 3 || matches == 4) {
+                            f.vt[0] = f.vt[1] = f.vt[2] = 0;
+                            f.vn[0] = f.vn[1] = f.vn[2] = 0;
+                            model->faces[model->face_count++] = f;
+                            
+                            if (matches == 4) {
+                                Face f2;
+                                f2.v[0] = f.v[0]; f2.v[1] = f.v[2]; f2.v[2] = v4;
+                                f2.vt[0] = f2.vt[1] = f2.vt[2] = 0;
+                                f2.vn[0] = f2.vn[1] = f2.vn[2] = 0;
+                                model->faces[model->face_count++] = f2;
+                            }
+                        }
+                    }
                 }
-            }
-            
-            if (matches != 9 && matches != 6) {
-                // Formato: v/vt
-                matches = sscanf(line, "f %d/%d %d/%d %d/%d",
-                               &f.v[0], &f.vt[0],
-                               &f.v[1], &f.vt[1],
-                               &f.v[2], &f.vt[2]);
-                if (matches == 6) {
-                    f.vn[0] = f.vn[1] = f.vn[2] = 0;
-                }
-            }
-            
-            if (matches != 9 && matches != 6) {
-                // Formato: v (apenas vértices)
-                matches = sscanf(line, "f %d %d %d",
-                               &f.v[0], &f.v[1], &f.v[2]);
-                if (matches == 3) {
-                    f.vt[0] = f.vt[1] = f.vt[2] = 0;
-                    f.vn[0] = f.vn[1] = f.vn[2] = 0;
-                }
-            }
-            
-            if (matches >= 3) {
-                model->faces[model->face_count++] = f;
             }
         }
     }
@@ -141,6 +191,12 @@ void draw_obj_model(OBJModel *model) {
             int vn_idx = f.vn[j] - 1;
             int vt_idx = f.vt[j] - 1;
             
+            // Valida índice do vértice
+            if (v_idx < 0 || v_idx >= model->vertex_count) {
+                fprintf(stderr, "Aviso: índice de vértice inválido %d na face %d\n", f.v[j], i);
+                continue;
+            }
+            
             // Normal
             if (vn_idx >= 0 && vn_idx < model->normal_count) {
                 Normal n = model->normals[vn_idx];
@@ -154,10 +210,8 @@ void draw_obj_model(OBJModel *model) {
             }
             
             // Vértice
-            if (v_idx >= 0 && v_idx < model->vertex_count) {
-                Vertex v = model->vertices[v_idx];
-                glVertex3f(v.x, v.y, v.z);
-            }
+            Vertex v = model->vertices[v_idx];
+            glVertex3f(v.x, v.y, v.z);
         }
     }
     glEnd();
