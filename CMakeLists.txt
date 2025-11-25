@@ -12,7 +12,7 @@ find_package(GLUT REQUIRED)
 
 # Adicionando ao executável
 add_executable(
-    main.exe main.c
+    main.exe main.c obj_loader.c
 )
 
 # Adicionando as bibliotecas a compilação

@@ -7,6 +7,7 @@
 #include <math.h>
 #include <stdarg.h>
 #include <unistd.h>
+#include "obj_loader.h"
 
 #define translado 30
 #define escala 3
@@ -15,10 +16,24 @@
 #endif
 int rotating=0, timeOfDay=360, skyColor=255;
 
+// Modelos OBJ carregados
+OBJModel *model_air_cond = NULL;
+OBJModel *model_aud_chair = NULL;
+OBJModel *model_blackboard_big = NULL;
+OBJModel *model_blackboard_small = NULL;
+OBJModel *model_chair = NULL;
+OBJModel *model_desk = NULL;
+OBJModel *model_extintor = NULL;
+OBJModel *model_fan = NULL;
+OBJModel *model_pc = NULL;
+OBJModel *model_toilet = NULL;
+
 void DesenharCena();
 void making_sky();
 void making_sun();
 void making_moon();
+void load_all_models();
+void free_all_models();
 
 void making_environment();
 void audi_c();
@@ -740,6 +755,48 @@ void block3(){
     
     glPopMatrix();
 }
+// Carrega todos os modelos OBJ
+void load_all_models() {
+    printf("\n=== Carregando modelos OBJ ===\n");
+    
+    // Tenta carregar cada modelo disponível
+    // Nota: Ajuste os caminhos conforme a estrutura dos seus arquivos OBJ
+    
+    // Ar condicionado
+    model_air_cond = load_obj("assets/air-cond/pc.obj");
+    
+    // Cadeira de auditório
+    model_aud_chair = load_obj("assets/aud-chair/aud-chair.obj");
+    
+    // Cadeira
+    model_chair = load_obj("assets/chair_h/chair_h.obj");
+    
+    // Mesa/carteira escolar
+    model_desk = load_obj("assets/deskschool/school chair.obj");
+    
+    // Ventilador de teto
+    model_fan = load_obj("assets/fan/fan.obj");
+    
+    // Computador/PC
+    model_pc = load_obj("assets/pc/pc.obj");
+    
+    printf("=== Modelos carregados ===\n\n");
+}
+
+// Libera todos os modelos da memória
+void free_all_models() {
+    free_obj_model(model_air_cond);
+    free_obj_model(model_aud_chair);
+    free_obj_model(model_blackboard_big);
+    free_obj_model(model_blackboard_small);
+    free_obj_model(model_chair);
+    free_obj_model(model_desk);
+    free_obj_model(model_extintor);
+    free_obj_model(model_fan);
+    free_obj_model(model_pc);
+    free_obj_model(model_toilet);
+}
+
 // Inicializa parmetros de rendering
 void Inicializa(void)
 {
@@ -767,6 +824,9 @@ void Inicializa(void)
     glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
     
+    // Carrega os modelos OBJ
+    load_all_models();
+    
     glutWarpPointer(400,300);
     glutSetCursor(GLUT_CURSOR_NONE);
 }
@@ -783,17 +843,17 @@ void DISPLAY(void)
     if (projecao==1)
     {
         glOrtho(-200, 200, -200, 200, -200, 200);  //Define a proje��o como ortogonal
-        if (rotacao=1)
+        if (rotacao==1)
             glRotatef(angulox,1.0,0.0,0.0);
-        if (rotacao=2)
+        if (rotacao==2)
             glRotatef(anguloy,0.0,1.0,0.0);
     }
     if (projecao == 0)
     {
         gluPerspective(90,1,1,2000); //Define a proje��o como perspectiva
-        if (rotacao=1)
+        if (rotacao==1)
             glRotatef(angulox,1.0,0.0,0.0);
-        if (rotacao=2)
+        if (rotacao==2)
             glRotatef(anguloy,0.0,1.0,0.0);
     }
 
@@ -822,6 +882,39 @@ void DesenharCena()
     block1();
     block2();
     block3();
+    
+    // Desenha alguns modelos OBJ como exemplo
+    // Você pode posicionar e escalar conforme necessário
+    
+    // Exemplo: Desenha um ventilador no teto da primeira sala
+    if (model_fan) {
+        glPushMatrix();
+        glTranslatef(35, 14, -35);  // Posição no teto do block1
+        glScalef(0.5, 0.5, 0.5);
+        glColor3ub(150, 150, 150);
+        draw_obj_model(model_fan);
+        glPopMatrix();
+    }
+    
+    // Exemplo: Desenha um extintor na parede
+    if (model_extintor) {
+        glPushMatrix();
+        glTranslatef(50, 0, -35);
+        glScalef(2, 2, 2);
+        glColor3ub(255, 0, 0);
+        draw_obj_model(model_extintor);
+        glPopMatrix();
+    }
+    
+    // Exemplo: Desenha um PC na mesa do professor
+    if (model_pc) {
+        glPushMatrix();
+        glTranslatef(35, 0, -48);  // Na mesa do professor
+        glScalef(0.3, 0.3, 0.3);
+        glColor3ub(80, 80, 80);
+        draw_obj_model(model_pc);
+        glPopMatrix();
+    }
 }
 
 void MOUSE_Button(int botao, int estado, int x, int y)
@@ -983,7 +1076,7 @@ int main(int argc, char**argv)
                                                                 //  Buffer que permite trablhar com profundidade e elimina faces escondidas.*/
     glutInitWindowSize(800,600);
     glutInitWindowPosition(10, 10);
-    glutCreateWindow("Aula 07");
+    glutCreateWindow("IBILCE Block C - OpenGL");
     Inicializa();
     glutDisplayFunc(DISPLAY);
     glutKeyboardFunc(keyboard);
@@ -991,5 +1084,9 @@ int main(int argc, char**argv)
     glutPassiveMotionFunc(MOUSE);
     glutSpecialFunc(TeclasEspeciais);
     glutMainLoop();
+    
+    // Libera modelos antes de sair
+    free_all_models();
+    
     return 0;
 }
