@@ -50,17 +50,37 @@
 			{
 				"command" : 2,
 				"file" : 1,
-				"line" : 213,
+				"line" : 218,
 				"parent" : 4
 			},
 			{
 				"command" : 2,
 				"file" : 1,
-				"line" : 218,
+				"line" : 223,
 				"parent" : 4
 			}
 		]
 	},
+	"codemodelVersion" : 
+	{
+		"major" : 2,
+		"minor" : 9
+	},
+	"compileDependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "OpenGL::GL::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "OpenGL::GLU::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "GLUT::GLUT::@6890427a1f51a3e7e1df"
+		}
+	],
 	"compileGroups" : 
 	[
 		{
@@ -124,6 +144,25 @@
 		],
 		"language" : "C"
 	},
+	"linkLibraries" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "OpenGL::GL::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "OpenGL::GLU::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "GLUT::GLUT::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"fragment" : "m"
+		}
+	],
 	"name" : "main.exe",
 	"nameOnDisk" : "main.exe",
 	"paths" : 
