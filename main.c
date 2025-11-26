@@ -7,6 +7,7 @@
 #include <math.h>
 #include <stdarg.h>
 #include <unistd.h>
+#include "obj_loader.h"
 
 #define translado 30
 #define escala 3
@@ -16,9 +17,11 @@ void making_enviroment();
 void making_sun();
 void making_sky();
 
+void stroke_output(GLfloat x, GLfloat y, char *format,...);
+
 void DesenharCena();
 
-void making_class_block(float x, float y, float z);
+void making_class_block(float x, float y, float z, int i);
 void making_door(float x, float y, float z);
 
 //Declara��o de Vari�veis Globis
@@ -171,7 +174,34 @@ void back_block(float x, float y, float z){
     glPopMatrix();
 }
 
-void making_class_block(float x, float y, float z){
+void making_conditional_air(float x, float y, float z){
+    //caixote
+    glPushMatrix();
+    glTranslatef(x, y, z);
+    glScalef(0.4, 0.3, 0.3);
+    glColor3ub(200, 200, 200);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    //fundo da helice
+    glPushMatrix();
+    glTranslatef(x+1.2, y, z-3);
+    glScalef(1, 1, 0.01);
+    glColor3ub(100, 100, 100);
+    gluSphere(gluNewQuadric(), 2.6, 100,100);
+    glPopMatrix();
+
+    //helice
+    glPushMatrix();
+    glTranslatef(x+1.2, y, z-3);
+    glScalef(0.1, 1, 0.1);
+    glRotatef(200, 0, 0, 2);
+    glColor3ub(150, 150, 150);
+    glutSolidCube(4);
+    glPopMatrix();
+}
+
+void making_class_block(float x, float y, float z, int block_number){
     
     //Parede de tras
     back_block(x-73, y, z);
@@ -394,6 +424,131 @@ void making_class_block(float x, float y, float z){
     glutSolidCube(100);
     glPopMatrix();
 
+    //Ares condicionados
+    making_conditional_air(x-55, y+2, z-3);
+    making_conditional_air(x-41, y+2, z-3);
+    making_conditional_air(x+9, y+2, z-3);
+    making_conditional_air(x+119, y+2, z-3);
+    making_conditional_air(x+133, y+2, z-3);
+
+    //Piso
+    glPushMatrix();
+    glColor3ub(50, 50, 50);
+    glTranslatef(x+50, y-9.9, z+50);
+    glScalef(3, 0, 1);
+    glutSolidCube(100);
+    glPopMatrix();
+
+    OBJModel *cadeira = load_obj("chair.h/chair_h.obj");
+    for(int i=0; i<5;i++){
+        for(int j=0; j<5;j++){
+            glPushMatrix();
+            glColor3ub(255, 204, 102);
+            glRotatef(-90, 0, 1, 0);
+            glTranslatef(x-(j*10), y-10, z+62.5-(i*10));
+            glScalef(5, 5, 5);
+            draw_obj_model(cadeira);
+            glPopMatrix();
+        }
+    }
+
+    for(int i=0; i<5;i++){
+        for(int j=0; j<5;j++){
+            glPushMatrix();
+            glColor3ub(255, 204, 102);
+            glRotatef(-90, 0, 1, 0);
+            glTranslatef(x-(j*10), y-10, z+112.5-(i*10));
+            glScalef(5, 5, 5);
+            draw_obj_model(cadeira);
+            glPopMatrix();  
+        }
+    }
+
+    for(int i=0; i<5;i++){
+        for(int j=0; j<5;j++){
+            glPushMatrix();
+            glColor3ub(255, 204, 102);
+            glRotatef(-90, 0, 1, 0);
+            glTranslatef(x-(j*10), y-10, z+162.5-(i*10));
+            glScalef(5, 5, 5);
+            draw_obj_model(cadeira);
+            glPopMatrix();  
+        }
+    }
+
+    OBJModel *mesa_cadeira = load_obj("deskschool/school chair.obj");
+    for(int i=0; i<5;i++){
+        for(int j=0; j<3;j++){
+            glPushMatrix();
+            glColor3ub(255, 204, 102);
+            glTranslatef(x+110-(i*10), y-7, z+60-(j*20));
+            glScalef(2, 2, 2);
+            draw_obj_model(mesa_cadeira);
+            glPopMatrix();
+        }
+    }
+
+    for(int i=0; i<5;i++){
+        for(int j=0; j<3;j++){
+            glPushMatrix();
+            glColor3ub(255, 204, 102);
+            glTranslatef(x+185-(i*10), y-7, z+60-(j*20));
+            glScalef(2, 2, 2);
+            draw_obj_model(mesa_cadeira);
+            glPopMatrix();
+        }
+    }
+
+    OBJModel *lousa = load_obj("chalkboard/ChalkBoard.obj");
+    glPushMatrix();
+    glColor3ub(24, 104, 7);
+    glTranslatef(x+30, y+4, z+99);
+    glScalef(5, 5, 5);
+    draw_obj_model(lousa);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(24, 104, 7);
+    glTranslatef(x-20, y+4, z+99);
+    glScalef(5, 5, 5);
+    draw_obj_model(lousa);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(24, 104, 7);
+    glTranslatef(x-70, y+4, z+99);
+    glScalef(5, 5, 5);
+    draw_obj_model(lousa);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(24, 104, 7);
+    glTranslatef(x+90, y+4, z+99);
+    glScalef(7, 5, 5);
+    draw_obj_model(lousa);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(24, 104, 7);
+    glTranslatef(x+170, y+4, z+99);
+    glScalef(7, 5, 5);
+    draw_obj_model(lousa);
+    glPopMatrix();
+
+    //Plaquinha de bloco
+    glPushMatrix();
+    glTranslatef(x-84.37, y+4, z+101);
+    glScalef(0.23, 0.12, 0.02);
+    glColor3ub(0, 0, 0);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(204, 153, 0);
+    glTranslatef(x-86, y+4, z+102);
+    glScalef(0.15, 0.12, 1);
+    stroke_output(0, 0, "Bloco %d", block_number);
+    glPopMatrix();
 }
 
 void stroke_output(GLfloat x, GLfloat y, char *format,...)//fun��o para escrever em 3d
@@ -476,13 +631,6 @@ void DesenharCena ()
     glutSolidCube(20);
     glPopMatrix();
     /******/
-
-    /*TEXTO Exemplo*/
-    glColor3ub(0,0,0);
-    glPushMatrix();
-    glTranslatef(-35, 41, 40.2);
-    stroke_output(0, 0, "CASA ABRIDANTE EM openGL!!");
-    glPopMatrix();
     
     glTranslatef(0, translado, 0);
     glScalef(escala, escala, escala);
@@ -496,7 +644,7 @@ void DesenharCena ()
     //making_door();
     glPopMatrix();
     
-    making_class_block(0, 0, -70);
+    making_class_block(0, 0, -70, 1);
 
     //making_roof();
 

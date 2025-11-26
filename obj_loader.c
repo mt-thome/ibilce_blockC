@@ -37,8 +37,8 @@ OBJModel* load_obj(const char *filename) {
     int v_count, vt_count, vn_count, f_count;
     count_obj_elements(file, &v_count, &vt_count, &vn_count, &f_count);
     
-    printf("Carregando %s: %d vértices, %d normais, %d texturas, %d faces\n",
-           filename, v_count, vn_count, vt_count, f_count);
+    // printf("Carregando %s: %d vértices, %d normais, %d texturas, %d faces\n",
+    //        filename, v_count, vn_count, vt_count, f_count);
     
     // Aloca memória
     model->vertices = (Vertex*)malloc(v_count * sizeof(Vertex));
