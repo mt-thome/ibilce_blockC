@@ -23,6 +23,9 @@ void making_door(float x, float y, float z);
 
 //Declara��o de Vari�veis Globis
 int projecao=0; //Vari�vel L�gica para Definir o Tipo de Proje��o (Perspectiva ou Ortogonal)
+//Original 0 30 200
+//       |
+//      V
 float posx=0, posy=30, posz=200; //Vari�veis que definem a posi��o da c�mera
 float oy=30,ox=0,oz=0;         //Vari�veis que definem para onde a c�mera olha
 int lx=0, ly=1,  lz=0;     //Vari�veis que definem o eixo da c�mera
@@ -88,7 +91,7 @@ void making_pillar(float x, float y, float z){
     glPushMatrix();
     glTranslatef(x, y, z);
     glScalef(0.25, 3.2, 0.2);
-    glColor3ub(228, 228, 228);
+    glColor3ub(180, 180, 180);
     glutSolidCube(20);
     glPopMatrix();
 }
@@ -109,13 +112,110 @@ void back_block(float x, float y, float z){
     glColor3ub(209, 80, 6);
     glutSolidCube(20);
     glPopMatrix();
+
+    //Janela
+    //Borda de cima
+    glPushMatrix();
+    glTranslatef(x, y+27.5, z);
+    glScalef(2.65, 0.05, 0.05);
+    glColor3ub(70, 17, 149);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    //Borda de baixo
+    glPushMatrix();
+    glTranslatef(x, y+10.5, z);
+    glScalef(2.65, 0.05, 0.05);
+    glColor3ub(70, 17, 149);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    //Borda esquerda
+    glPushMatrix();
+    glTranslatef(x-26, y+18, z);
+    glScalef(0.05, 0.9, 0.04);
+    glColor3ub(70, 17, 149);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    //Borda direita
+    glPushMatrix();
+    glTranslatef(x+25, y+18, z);
+    glScalef(0.05, 0.9, 0.04);
+    glColor3ub(70, 17, 149);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    //Haste do meio
+    glPushMatrix();
+    glTranslatef(x, y+18, z);
+    glScalef(0.05, 0.9, 0.04);
+    glColor3ub(70, 17, 149);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    //Barra horizontal de cima
+    glPushMatrix();
+    glTranslatef(x, y+21.9, z);
+    glScalef(2.65, 0.05, 0.05);
+    glColor3ub(70, 17, 149);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    //Barra horizontal de baixo
+    glPushMatrix();
+    glTranslatef(x, y+16.3, z);
+    glScalef(2.65, 0.05, 0.05);
+    glColor3ub(70, 17, 149);
+    glutSolidCube(20);
+    glPopMatrix();
 }
 
 void making_class_block(float x, float y, float z){
     
     //Parede de tras
     back_block(x-73, y, z);
+    back_block(x-22.5, y, z);
+    back_block(x+28, y, z);
+    back_block(x+78.5, y, z);
+    back_block(x+129, y, z);
+    back_block(x+170, y, z);
 
+    //Muretinha em cima do ar da parede de tras
+    glPushMatrix();
+    glTranslatef(x+50, y+10.5, z-2);
+    glScalef(14.7, 0.05, 0.2);
+    glColor3ub(180, 180, 180);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    //Pillares de tras
+    making_pillar(x-98, y, z-2);
+    making_pillar(x-48, y, z-2);
+    making_pillar(x+2, y, z-2);
+    making_pillar(x+52, y, z-2);
+    making_pillar(x+78, y, z-2);
+    making_pillar(x+102, y, z-2);
+    making_pillar(x+126, y, z-2);
+    making_pillar(x+152, y, z-2);
+    making_pillar(x+175, y, z-2);
+    making_pillar(x+198, y, z-2);
+
+    //Correcoes
+    glPushMatrix();
+    glTranslatef(x+152, y, z+1);
+    glScalef(0.25, 3.2, 0.01);
+    glColor3ub(209, 80, 6);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(x+175, y, z+1);
+    glScalef(0.25, 3.2, 0.01);
+    glColor3ub(209, 80, 6);
+    glutSolidCube(20);
+    glPopMatrix();
+    
     //Parede da esquerda
     glPushMatrix();
     glTranslatef(x-100, y, z+50);
@@ -175,7 +275,7 @@ void making_class_block(float x, float y, float z){
     glPopMatrix();
 
     glPushMatrix();
-    glTranslatef(x-93, y+20, z+99);
+    glTranslatef(x-93, y+22.5, z+99);
     glScalef(0.3, 1, 0.05);
     glColor3ub(209, 80, 6);
     glutSolidCube(20);
@@ -197,7 +297,7 @@ void making_class_block(float x, float y, float z){
     glPopMatrix();
 
     glPushMatrix();
-    glTranslatef(x-43, y+20, z+99);
+    glTranslatef(x-43, y+22.5, z+99);
     glScalef(0.3, 1, 0.05);
     glColor3ub(209, 80, 6);
     glutSolidCube(20);
@@ -218,7 +318,7 @@ void making_class_block(float x, float y, float z){
     glPopMatrix();
 
     glPushMatrix();
-    glTranslatef(x+7, y+20, z+99);
+    glTranslatef(x+7, y+22.5, z+99);
     glScalef(0.3, 1, 0.05);
     glColor3ub(209, 80, 6);
     glutSolidCube(20);
@@ -230,7 +330,7 @@ void making_class_block(float x, float y, float z){
 
     //Parede da frente - parte 4
     making_door(x+57, y-3.5, z+99);
-
+    
     glPushMatrix();
     glTranslatef(x+80, y, z+100);
     glScalef(2, 3, 0.05);
@@ -239,7 +339,7 @@ void making_class_block(float x, float y, float z){
     glPopMatrix();
 
     glPushMatrix();
-    glTranslatef(x+57, y+20, z+99);
+    glTranslatef(x+57, y+22.5, z+99);
     glScalef(0.3, 1, 0.05);
     glColor3ub(209, 80, 6);
     glutSolidCube(20);
@@ -268,7 +368,7 @@ void making_class_block(float x, float y, float z){
     glPopMatrix();
 
     glPushMatrix();
-    glTranslatef(x+131, y+20, z+99);
+    glTranslatef(x+131, y+22.5, z+99);
     glScalef(0.3, 1, 0.05);
     glColor3ub(209, 80, 6);
     glutSolidCube(20);
@@ -285,6 +385,15 @@ void making_class_block(float x, float y, float z){
     making_pillar(x+152, y, z+102);
     making_pillar(x+175, y, z+102);
     making_pillar(x+198, y, z+102);
+
+    //Telhado
+    glPushMatrix();
+    glColor3ub(228, 228, 228);
+    glTranslatef(x+50, y+38, z+50);
+    glScalef(3.2, 0.15, 1.6);
+    glutSolidCube(100);
+    glPopMatrix();
+
 }
 
 void stroke_output(GLfloat x, GLfloat y, char *format,...)//fun��o para escrever em 3d
