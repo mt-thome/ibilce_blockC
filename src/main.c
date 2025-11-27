@@ -16,6 +16,16 @@ int rotating = 0, skyColor = 255, chairList = 0;
 float timeOfDay = 0;
 float p[3] = {-122.5, -10, -20};
 
+// Quadrics globais (evita vazamento de memória)
+GLUquadric *sunQuadric = NULL;
+GLUquadric *sphereQuadric = NULL;
+
+// Modelos globais (carregados uma vez)
+OBJModel *modelo_cadeira = NULL;
+OBJModel *modelo_mesa = NULL;
+OBJModel *modelo_lousa = NULL;
+OBJModel *modelo_privada = NULL;
+
 // Calcula ângulo do sol baseado na hora atual (0-180 graus)
 float get_sun_angle()
 {
@@ -77,14 +87,17 @@ void making_sun()
 {
     glTranslatef(-40, 400, 0);
     glColor3ub(255, 165, 0);
-    gluSphere(gluNewQuadric(), 60, 100, 100);
+    if (sunQuadric == NULL) {
+        sunQuadric = gluNewQuadric();
+    }
+    gluSphere(sunQuadric, 60, 100, 100);
 }
 
 void making_sky()
 {
     glPushMatrix();
     glColor3ub(0, skyColor, skyColor);
-    glutSolidCube(2000);
+    glutSolidCube(4000);
     glPopMatrix();
 }
 
@@ -824,7 +837,7 @@ void making_class_block(float x, float y, float z, int block_number)
     glutSolidCube(100);
     glPopMatrix();
 
-    OBJModel *cadeira = load_obj("assets/chair_h/chair_h2.obj");
+    if (modelo_cadeira == NULL) modelo_cadeira = load_obj("assets/chair_h/chair_h2.obj");
     for (int i = 0; i < 5; i++)
     {
         for (int j = 0; j < 5; j++)
@@ -834,7 +847,7 @@ void making_class_block(float x, float y, float z, int block_number)
             glRotatef(-90, 0, 1, 0);
             glTranslatef(x - (j * 10), y - 10, z + 62.5 - (i * 10));
             glScalef(5, 5, 5);
-            draw_obj_model(cadeira);
+            draw_obj_model(modelo_cadeira);
             glPopMatrix();
         }
     }
@@ -848,7 +861,7 @@ void making_class_block(float x, float y, float z, int block_number)
             glRotatef(-90, 0, 1, 0);
             glTranslatef(x - (j * 10), y - 10, z + 112.5 - (i * 10));
             glScalef(5, 5, 5);
-            draw_obj_model(cadeira);
+            draw_obj_model(modelo_cadeira);
             glPopMatrix();
         }
     }
@@ -862,12 +875,12 @@ void making_class_block(float x, float y, float z, int block_number)
             glRotatef(-90, 0, 1, 0);
             glTranslatef(x - (j * 10), y - 10, z + 162.5 - (i * 10));
             glScalef(5, 5, 5);
-            draw_obj_model(cadeira);
+            draw_obj_model(modelo_cadeira);
             glPopMatrix();
         }
     }
 
-    OBJModel *mesa_cadeira = load_obj("assets/deskschool/school chair.obj");
+    if (modelo_mesa == NULL) modelo_mesa = load_obj("assets/deskschool/school chair.obj");
     for (int i = 0; i < 5; i++)
     {
         for (int j = 0; j < 3; j++)
@@ -876,7 +889,7 @@ void making_class_block(float x, float y, float z, int block_number)
             glColor3ub(255, 204, 102);
             glTranslatef(x + 110 - (i * 10), y - 7, z + 60 - (j * 20));
             glScalef(2, 2, 2);
-            draw_obj_model(mesa_cadeira);
+            draw_obj_model(modelo_mesa);
             glPopMatrix();
         }
     }
@@ -889,45 +902,45 @@ void making_class_block(float x, float y, float z, int block_number)
             glColor3ub(255, 204, 102);
             glTranslatef(x + 185 - (i * 10), y - 7, z + 60 - (j * 20));
             glScalef(2, 2, 2);
-            draw_obj_model(mesa_cadeira);
+            draw_obj_model(modelo_mesa);
             glPopMatrix();
         }
     }
 
-    OBJModel *lousa = load_obj("assets/chalkboard/ChalkBoard.obj");
+    if (modelo_lousa == NULL) modelo_lousa = load_obj("assets/chalkboard/ChalkBoard.obj");
     glPushMatrix();
     glColor3ub(24, 104, 7);
     glTranslatef(x + 30, y + 4, z + 99);
     glScalef(5, 5, 5);
-    draw_obj_model(lousa);
+    draw_obj_model(modelo_lousa);
     glPopMatrix();
 
     glPushMatrix();
     glColor3ub(24, 104, 7);
     glTranslatef(x - 20, y + 4, z + 99);
     glScalef(5, 5, 5);
-    draw_obj_model(lousa);
+    draw_obj_model(modelo_lousa);
     glPopMatrix();
 
     glPushMatrix();
     glColor3ub(24, 104, 7);
     glTranslatef(x - 70, y + 4, z + 99);
     glScalef(5, 5, 5);
-    draw_obj_model(lousa);
+    draw_obj_model(modelo_lousa);
     glPopMatrix();
 
     glPushMatrix();
     glColor3ub(24, 104, 7);
     glTranslatef(x + 90, y + 4, z + 99);
     glScalef(7, 5, 5);
-    draw_obj_model(lousa);
+    draw_obj_model(modelo_lousa);
     glPopMatrix();
 
     glPushMatrix();
     glColor3ub(24, 104, 7);
     glTranslatef(x + 170, y + 4, z + 99);
     glScalef(7, 5, 5);
-    draw_obj_model(lousa);
+    draw_obj_model(modelo_lousa);
     glPopMatrix();
 
     // Plaquinha de bloco
@@ -1185,17 +1198,17 @@ void making_class_block_without_bathroom(float x, float y, float z, int block_nu
     glutSolidCube(100);
     glPopMatrix();
 
-    OBJModel *cadeira = load_obj("assets/chair_h/chair_h2.obj");
+    if (modelo_cadeira == NULL) modelo_cadeira = load_obj("assets/chair_h/chair_h2.obj");
     for (int i = 0; i < 5; i++)
     {
         for (int j = 0; j < 5; j++)
         {
             glPushMatrix();
             glColor3ub(255, 204, 102);
-            glRotatef(-90, 0, 1, 0);
             glTranslatef(x - (j * 10), y - 10, z + 62.5 - (i * 10));
+            glRotatef(-90, 0, 1, 0);
             glScalef(5, 5, 5);
-            draw_obj_model(cadeira);
+            draw_obj_model(modelo_cadeira);
             glPopMatrix();
         }
     }
@@ -1206,10 +1219,9 @@ void making_class_block_without_bathroom(float x, float y, float z, int block_nu
         {
             glPushMatrix();
             glColor3ub(255, 204, 102);
-            glRotatef(-90, 0, 1, 0);
             glTranslatef(x - (j * 10), y - 10, z + 112.5 - (i * 10));
             glScalef(5, 5, 5);
-            draw_obj_model(cadeira);
+            draw_obj_model(modelo_cadeira);
             glPopMatrix();
         }
     }
@@ -1220,15 +1232,15 @@ void making_class_block_without_bathroom(float x, float y, float z, int block_nu
         {
             glPushMatrix();
             glColor3ub(255, 204, 102);
-            glRotatef(-90, 0, 1, 0);
             glTranslatef(x - (j * 10), y - 10, z + 162.5 - (i * 10));
+            glRotatef(-90, 0, 1, 0);
             glScalef(5, 5, 5);
-            draw_obj_model(cadeira);
+            draw_obj_model(modelo_cadeira);
             glPopMatrix();
         }
     }
 
-    OBJModel *mesa_cadeira = load_obj("assets/deskschool/school chair.obj");
+    if (modelo_mesa == NULL) modelo_mesa = load_obj("assets/deskschool/school chair.obj");
     for (int i = 0; i < 5; i++)
     {
         for (int j = 0; j < 3; j++)
@@ -1237,7 +1249,7 @@ void making_class_block_without_bathroom(float x, float y, float z, int block_nu
             glColor3ub(255, 204, 102);
             glTranslatef(x + 110 - (i * 10), y - 7, z + 60 - (j * 20));
             glScalef(2, 2, 2);
-            draw_obj_model(mesa_cadeira);
+            draw_obj_model(modelo_mesa);
             glPopMatrix();
         }
     }
@@ -1250,45 +1262,45 @@ void making_class_block_without_bathroom(float x, float y, float z, int block_nu
             glColor3ub(255, 204, 102);
             glTranslatef(x + 185 - (i * 10), y - 7, z + 60 - (j * 20));
             glScalef(2, 2, 2);
-            draw_obj_model(mesa_cadeira);
+            draw_obj_model(modelo_mesa);
             glPopMatrix();
         }
     }
 
-    OBJModel *lousa = load_obj("assets/chalkboard/ChalkBoard.obj");
+    if (modelo_lousa == NULL) modelo_lousa = load_obj("assets/chalkboard/ChalkBoard.obj");
     glPushMatrix();
     glColor3ub(24, 104, 7);
     glTranslatef(x + 30, y + 4, z + 99);
     glScalef(5, 5, 5);
-    draw_obj_model(lousa);
+    draw_obj_model(modelo_lousa);
     glPopMatrix();
 
     glPushMatrix();
     glColor3ub(24, 104, 7);
     glTranslatef(x - 20, y + 4, z + 99);
     glScalef(5, 5, 5);
-    draw_obj_model(lousa);
+    draw_obj_model(modelo_lousa);
     glPopMatrix();
 
     glPushMatrix();
     glColor3ub(24, 104, 7);
     glTranslatef(x - 70, y + 4, z + 99);
     glScalef(5, 5, 5);
-    draw_obj_model(lousa);
+    draw_obj_model(modelo_lousa);
     glPopMatrix();
 
     glPushMatrix();
     glColor3ub(24, 104, 7);
     glTranslatef(x + 90, y + 4, z + 99);
     glScalef(7, 5, 5);
-    draw_obj_model(lousa);
+    draw_obj_model(modelo_lousa);
     glPopMatrix();
 
     glPushMatrix();
     glColor3ub(24, 104, 7);
     glTranslatef(x + 170, y + 4, z + 99);
     glScalef(7, 5, 5);
-    draw_obj_model(lousa);
+    draw_obj_model(modelo_lousa);
     glPopMatrix();
 
     // Plaquinha de bloco
@@ -2062,13 +2074,13 @@ void DesenharCena()
     glTranslatef(0, translado, 0);
     glScalef(escala, escala, escala);
 
-    OBJModel *privada = load_obj("assets/toilet/toilet.obj");
+    if (modelo_privada == NULL) modelo_privada = load_obj("assets/toilet/toilet.obj");
     glPushMatrix();
     glColor3ub(180, 180, 180);
     glTranslatef(-450, 15, -190);
     glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
     glScalef(15, 15, 15);
-    draw_obj_model(privada);
+    draw_obj_model(modelo_privada);
     glPopMatrix();
 
     glPushMatrix();
@@ -2076,7 +2088,7 @@ void DesenharCena()
     glTranslatef(-450, 15, -160);
     glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
     glScalef(15, 15, 15);
-    draw_obj_model(privada);
+    draw_obj_model(modelo_privada);
     glPopMatrix();
 
     glPushMatrix();
@@ -2084,7 +2096,7 @@ void DesenharCena()
     glTranslatef(-450, 15, -130);
     glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
     glScalef(15, 15, 15);
-    draw_obj_model(privada);
+    draw_obj_model(modelo_privada);
     glPopMatrix();
 
     glPushMatrix();
@@ -2092,7 +2104,7 @@ void DesenharCena()
     glTranslatef(-450, 15, 15);
     glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
     glScalef(15, 15, 15);
-    draw_obj_model(privada);
+    draw_obj_model(modelo_privada);
     glPopMatrix();
 
     glPushMatrix();
@@ -2100,7 +2112,7 @@ void DesenharCena()
     glTranslatef(-450, 15, 45);
     glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
     glScalef(15, 15, 15);
-    draw_obj_model(privada);
+    draw_obj_model(modelo_privada);
     glPopMatrix();
 
     glPushMatrix();
@@ -2108,7 +2120,7 @@ void DesenharCena()
     glTranslatef(-450, 15, 75);
     glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
     glScalef(15, 15, 15);
-    draw_obj_model(privada);
+    draw_obj_model(modelo_privada);
     glPopMatrix();
 
     // Porta Giratória
