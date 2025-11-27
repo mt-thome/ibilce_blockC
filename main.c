@@ -329,6 +329,229 @@ void making_class_block(float x, float y, float z, int block_number){
     glutSolidCube(20);
     glPopMatrix();
 
+   //Telhado banheiro
+    glPushMatrix();
+    glColor3ub(228, 228, 228);
+    glTranslatef(x-155, y+38, z+50);
+    glScalef(0.9, 0.15, 1.6);
+    glutSolidCube(100);
+    glPopMatrix();
+
+    //Chao Banheiro
+    glPushMatrix();
+    glColor3ub(140, 140, 140);
+    glTranslatef(x-170, y-12.3, z+50);
+    glScalef(0.5, 0.05, 1);
+    glutSolidCube(100);
+    glPopMatrix();
+
+    //Pia banheiro fem
+    glPushMatrix();
+    glColor3ub(60, 60, 60);
+    glTranslatef(x-189, y-3.8, z+50);
+    glScalef(0.5, 0.2, 3);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    
+
+    //Parede da frente banheiro
+    glPushMatrix();
+    glTranslatef(x-145, y-3.5, z+40);
+    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+    making_door(0, 0, 0);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(x-145, y-3.5, z+60);
+    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+    making_door(0, 0, 0);
+    glPopMatrix();
+
+    
+    glPushMatrix();
+    glTranslatef(x-145, y, z+50);
+    glScalef(0.04, 3, 5);
+    glColor3ub(209, 80, 6);
+    glutSolidCube(20);
+    glPopMatrix();
+
+     //Parede do fundo banheiro
+    glPushMatrix();
+    glTranslatef(x-194, y, z+50);
+    glScalef(0.05, 3, 5);
+    glColor3ub(209, 80, 6);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    //Pillar banheiro
+    making_pillar(x-145, y, z+102);
+    making_pillar(x-169, y, z+102);
+    making_pillar(x-193, y, z+102);
+    making_pillar(x-145, y, z-2);
+    making_pillar(x-169, y, z-2);
+    making_pillar(x-193, y, z-2);
+
+    //privada
+    
+
+    //Parede da esquerda banheiro - parte 1
+    
+
+    glPushMatrix();
+    glTranslatef(x-169, y, z+100);
+    glScalef(2.5, 3, 0.05);
+    glColor3ub(209, 80, 6);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(x-93, y+22.5, z+99);
+    glScalef(0.3, 1, 0.05);
+    glColor3ub(209, 80, 6);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    //Parede da direita banheiro - parte 1
+    
+
+    glPushMatrix();
+    glTranslatef(x-169, y, z);
+    glScalef(2.5, 3, 0.05);
+    glColor3ub(209, 80, 6);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(x-93, y+22.5, z+99);
+    glScalef(0.3, 1, 0.05);
+    glColor3ub(209, 80, 6);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    //Divisoria banheiro - parte 1
+    
+
+    glPushMatrix();
+    glTranslatef(x-169, y, z+50);
+    glScalef(2.5, 3, 0.05);
+    glColor3ub(209, 80, 6);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(x-93, y+22.5, z+99);
+    glScalef(0.3, 1, 0.05);
+    glColor3ub(209, 80, 6);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    //Box
+    glPushMatrix();
+    glTranslatef(x-153, y+4, z+1);
+    glScalef(0.7, 1, 0.05);
+    glColor3ub(195, 195, 195);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(x-153, y+4, z+11);
+    glScalef(0.7, 1, 0.05);
+    glColor3ub(195, 195, 195);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(x-162, y+4, z+5);
+    glRotatef(50.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(0.5, 1, 0.05);
+    glColor3ub(195, 195, 195);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(x-153, y+4, z+21);
+    glScalef(0.7, 1, 0.05);
+    glColor3ub(195, 195, 195);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(x-160, y+4, z+16);
+    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(0.5, 1, 0.05);
+    glColor3ub(195, 195, 195);
+    glutSolidCube(20);
+    glPopMatrix();
+
+     glPushMatrix();
+    glTranslatef(x-153, y+4, z+31);
+    glScalef(0.7, 1, 0.05);
+    glColor3ub(195, 195, 195);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(x-160, y+4, z+27);
+    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(0.5, 1, 0.05);
+    glColor3ub(195, 195, 195);
+    glutSolidCube(20);
+    glPopMatrix();
+    
+//
+    glPushMatrix();
+    glTranslatef(x-153, y+4, z+70);
+    glScalef(0.7, 1, 0.05);
+    glColor3ub(195, 195, 195);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(x-153, y+4, z+80);
+    glScalef(0.7, 1, 0.05);
+    glColor3ub(195, 195, 195);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(x-162, y+4, z+74);
+    glRotatef(50.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(0.5, 1, 0.05);
+    glColor3ub(195, 195, 195);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(x-153, y+4, z+90);
+    glScalef(0.7, 1, 0.05);
+    glColor3ub(195, 195, 195);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(x-160, y+4, z+84);
+    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(0.5, 1, 0.05);
+    glColor3ub(195, 195, 195);
+    glutSolidCube(20);
+    glPopMatrix();
+
+     glPushMatrix();
+    glTranslatef(x-153, y+4, z+100);
+    glScalef(0.7, 1, 0.05);
+    glColor3ub(195, 195, 195);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(x-160, y+4, z+95);
+    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(0.5, 1, 0.05);
+    glColor3ub(195, 195, 195);
+    glutSolidCube(20);
+    glPopMatrix();
+
     //Parede da direita
     glPushMatrix();
     glTranslatef(x+200, y, z+50);
@@ -862,6 +1085,32 @@ void DesenharCena ()
     glutSolidCube(20);
     glPopMatrix();
     /******/
+
+    OBJModel *privada = load_obj("../assets/toilet/toilet.obj");
+    glPushMatrix();
+    glColor3ub(180, 180, 180);
+    glTranslatef(-450, 15, -190);
+    glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(15, 15, 15);
+    draw_obj_model(privada);
+    glPopMatrix();
+
+    
+    glPushMatrix();
+    glColor3ub(180, 180, 180);
+    glTranslatef(-450, 15, -160);
+    glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(15, 15, 15);
+    draw_obj_model(privada);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(180, 180, 180);
+    glTranslatef(-450, 15, -130);
+    glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(15, 15, 15);
+    draw_obj_model(privada);
+    glPopMatrix();
     
     glTranslatef(0, translado, 0);
     glScalef(escala, escala, escala);
@@ -876,7 +1125,7 @@ void DesenharCena ()
     glPopMatrix();
     
     making_class_block(0, 0, -70, 1);
-    making_auditorium(-220, 0, -8);
+    making_auditorium(-260, 0, -8);
 
     //making_roof();
 
