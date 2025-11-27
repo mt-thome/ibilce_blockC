@@ -24,11 +24,9 @@ float get_sun_angle()
     time(&rawtime);
     timeinfo = localtime(&rawtime);
 
-    // Pega hora e minuto atual
     int hora = timeinfo->tm_hour;
     int minuto = timeinfo->tm_min;
 
-    // Converte para minutos desde meia-noite (0-1440)
     float minutos_dia = hora * 60.0f + minuto;
 
     // Nascer do sol: 6h (360 min) = 0°
@@ -37,17 +35,14 @@ float get_sun_angle()
     float angle;
     if (minutos_dia < 360)
     {
-        // Antes das 6h: sol abaixo do horizonte (nascer)
         angle = 0;
     }
     else if (minutos_dia > 1080)
     {
-        // Depois das 18h: sol abaixo do horizonte (pôr)
         angle = 180;
     }
     else
     {
-        // Entre 6h e 18h: sol visível (0 a 180 graus)
         angle = ((minutos_dia - 360) / 720.0f) * 180.0f;
     }
 
@@ -64,21 +59,18 @@ void DesenharCena();
 void making_class_block(float x, float y, float z, int block_Number);
 void making_door(float x, float y, float z);
 
-// Declara��o de Vari�veis Globis
-int projecao = 0; // Vari�vel L�gica para Definir o Tipo de Proje��o (Perspectiva ou Ortogonal)
-// Original 0 30 200
-//        |
-//       V
-float posx = 0, posy = 30, posz = 200; // Vari�veis que definem a posi��o da c�mera
-float oy = 30, ox = 0, oz = 0;         // Vari�veis que definem para onde a c�mera olha
-int lx = 0, ly = 1, lz = 0;            // Vari�veis que definem o eixo da c�mera
+// Declaração de variáveis globais
+int projecao = 0;                      // Variável para controle de projeção (0 - perspectiva, 1 - ortográfica)
+float posx = 0, posy = 30, posz = 200; // Variáveis que definem a posição da câmera
+float oy = 30, ox = 0, oz = 0;         // Variáveis que definem para onde a câmera olha
+int lx = 0, ly = 1, lz = 0;            // Variáveis que definem o eixo da câmera
 
 GLfloat angulox = 0.0;
 GLfloat anguloy = 0.0;
 
-int x_temp = -1; // Armazena posi��o X do ponteiro do mouse
-int y_temp = -1; // Armazena posi��o Y do ponteiro do mouse
-int rotacao = 0; // Controla eixo de rota��o do mouse
+int x_temp = -1; // Armazena posição X do ponteiro do mouse
+int y_temp = -1; // Armazena posição Y do ponteiro do mouse
+int rotacao = 0; // Controla eixo de rotação do mouse
 int i;           // controle do for
 
 void making_sun()
@@ -96,7 +88,6 @@ void making_sky()
     glPopMatrix();
 }
 
-// --- FUNÇÃO PORTA DUPLA ---
 void making_double_door(float x, float y, float z)
 {
     glPushMatrix();
@@ -141,7 +132,6 @@ void making_double_door(float x, float y, float z)
     glPopMatrix();
 }
 
-// Desenha Cadeira
 void draw_auditorium_chair(float x, float y, float z, float rotY)
 {
     if (chairList == 0)
@@ -322,7 +312,7 @@ void back_block(float x, float y, float z)
 
 void making_conditional_air(float x, float y, float z)
 {
-    // caixote
+    // Caixote
     glPushMatrix();
     glTranslatef(x, y, z);
     glScalef(0.4, 0.3, 0.3);
@@ -330,7 +320,7 @@ void making_conditional_air(float x, float y, float z)
     glutSolidCube(20);
     glPopMatrix();
 
-    // fundo da helice
+    // Fundo da hélice
     glPushMatrix();
     glTranslatef(x + 1.2, y, z - 3);
     glScalef(1, 1, 0.01);
@@ -338,7 +328,7 @@ void making_conditional_air(float x, float y, float z)
     gluSphere(gluNewQuadric(), 2.6, 100, 100);
     glPopMatrix();
 
-    // helice
+    // Hélice
     glPushMatrix();
     glTranslatef(x + 1.2, y, z - 3);
     glScalef(0.1, 1, 0.1);
@@ -351,7 +341,7 @@ void making_conditional_air(float x, float y, float z)
 void making_class_block(float x, float y, float z, int block_number)
 {
 
-    // Parede de tras
+    // Parede de trás
     back_block(x - 73, y, z);
     back_block(x - 22.5, y, z);
     back_block(x + 28, y, z);
@@ -359,7 +349,7 @@ void making_class_block(float x, float y, float z, int block_number)
     back_block(x + 129, y, z);
     back_block(x + 170, y, z);
 
-    // Muretinha em cima do ar da parede de tras
+    // Muretinha em cima do ar da parede de trás
     glPushMatrix();
     glTranslatef(x + 50, y + 10.5, z - 2);
     glScalef(14.7, 0.05, 0.2);
@@ -367,7 +357,7 @@ void making_class_block(float x, float y, float z, int block_number)
     glutSolidCube(20);
     glPopMatrix();
 
-    // Pillares de tras
+    // Pilares de trás
     making_pillar(x - 98, y, z - 2);
     making_pillar(x - 48, y, z - 2);
     making_pillar(x + 2, y, z - 2);
@@ -379,7 +369,7 @@ void making_class_block(float x, float y, float z, int block_number)
     making_pillar(x + 175, y, z - 2);
     making_pillar(x + 198, y, z - 2);
 
-    // Correcoes
+    // Correções
     glPushMatrix();
     glTranslatef(x + 152, y, z + 1);
     glScalef(0.25, 3.2, 0.01);
@@ -402,7 +392,7 @@ void making_class_block(float x, float y, float z, int block_number)
     glutSolidCube(20);
     glPopMatrix();
 
-    // banquinho
+    // Banquinho
     glPushMatrix();
     glColor3ub(85, 85, 85);
     glTranslatef(x - 103, y - 6, z + 50);
@@ -410,7 +400,7 @@ void making_class_block(float x, float y, float z, int block_number)
     glutSolidCube(20);
     glPopMatrix();
 
-    // bebedouro
+    // Bebedouro
     glPushMatrix();
     glColor3ub(100, 100, 100);
     glTranslatef(x - 142, y - 5, z + 80);
@@ -447,7 +437,7 @@ void making_class_block(float x, float y, float z, int block_number)
     glutSolidCube(100);
     glPopMatrix();
 
-    // Chao Banheiro
+    // Chão Banheiro
     glPushMatrix();
     glColor3ub(140, 140, 140);
     glTranslatef(x - 170, y - 12.3, z + 50);
@@ -491,7 +481,7 @@ void making_class_block(float x, float y, float z, int block_number)
     glutSolidCube(20);
     glPopMatrix();
 
-    // Pillar banheiro
+    // Pilar banheiro
     making_pillar(x - 145, y, z + 102);
     making_pillar(x - 169, y, z + 102);
     making_pillar(x - 193, y, z + 102);
@@ -499,10 +489,7 @@ void making_class_block(float x, float y, float z, int block_number)
     making_pillar(x - 169, y, z - 2);
     making_pillar(x - 193, y, z - 2);
 
-    // privada
-
     // Parede da esquerda banheiro - parte 1
-
     glPushMatrix();
     glTranslatef(x - 169, y, z + 100);
     glScalef(2.5, 3, 0.05);
@@ -518,7 +505,6 @@ void making_class_block(float x, float y, float z, int block_number)
     glPopMatrix();
 
     // Parede da direita banheiro - parte 1
-
     glPushMatrix();
     glTranslatef(x - 169, y, z);
     glScalef(2.5, 3, 0.05);
@@ -534,7 +520,6 @@ void making_class_block(float x, float y, float z, int block_number)
     glPopMatrix();
 
     // Divisoria banheiro - parte 1
-
     glPushMatrix();
     glTranslatef(x - 169, y, z + 50);
     glScalef(2.5, 3, 0.05);
@@ -602,7 +587,6 @@ void making_class_block(float x, float y, float z, int block_number)
     glutSolidCube(20);
     glPopMatrix();
 
-    //
     glPushMatrix();
     glTranslatef(x - 153, y + 4, z + 70);
     glScalef(0.7, 1, 0.05);
@@ -712,7 +696,7 @@ void making_class_block(float x, float y, float z, int block_number)
     glutSolidCube(20);
     glPopMatrix();
 
-    // Pillar 1 - 3
+    // Pilar 1 - 3
     making_pillar(x - 98, y, z + 102);
     making_pillar(x - 72, y, z + 102);
     making_pillar(x - 48, y, z + 102);
@@ -734,7 +718,7 @@ void making_class_block(float x, float y, float z, int block_number)
     glutSolidCube(20);
     glPopMatrix();
 
-    // Pillar 4 - 5
+    // Pilar 4 - 5
     making_pillar(x - 22, y, z + 102);
     making_pillar(x + 2, y, z + 102);
 
@@ -755,7 +739,7 @@ void making_class_block(float x, float y, float z, int block_number)
     glutSolidCube(20);
     glPopMatrix();
 
-    // Pillar 6 - 7
+    // Pilar 6 - 7
     making_pillar(x + 28, y, z + 102);
     making_pillar(x + 52, y, z + 102);
 
@@ -783,7 +767,7 @@ void making_class_block(float x, float y, float z, int block_number)
     glutSolidCube(20);
     glPopMatrix();
 
-    // Pillar 8 - 10
+    // Pilar 8 - 10
     making_pillar(x + 78, y, z + 102);
     making_pillar(x + 102, y, z + 102);
     making_pillar(x + 126, y, z + 102);
@@ -812,7 +796,7 @@ void making_class_block(float x, float y, float z, int block_number)
     glutSolidCube(20);
     glPopMatrix();
 
-    // Pillar 11 - 13
+    // Pilar 11 - 13
     making_pillar(x + 152, y, z + 102);
     making_pillar(x + 175, y, z + 102);
     making_pillar(x + 198, y, z + 102);
@@ -1073,7 +1057,7 @@ void making_class_block_without_bathroom(float x, float y, float z, int block_nu
     glutSolidCube(20);
     glPopMatrix();
 
-    // Pillar 1 - 3
+    // Pilar 1 - 3
     making_pillar(x - 98, y, z + 102);
     making_pillar(x - 72, y, z + 102);
     making_pillar(x - 48, y, z + 102);
@@ -1095,7 +1079,7 @@ void making_class_block_without_bathroom(float x, float y, float z, int block_nu
     glutSolidCube(20);
     glPopMatrix();
 
-    // Pillar 4 - 5
+    // Pilar 4 - 5
     making_pillar(x - 22, y, z + 102);
     making_pillar(x + 2, y, z + 102);
 
@@ -1116,7 +1100,7 @@ void making_class_block_without_bathroom(float x, float y, float z, int block_nu
     glutSolidCube(20);
     glPopMatrix();
 
-    // Pillar 6 - 7
+    // Pilar 6 - 7
     making_pillar(x + 28, y, z + 102);
     making_pillar(x + 52, y, z + 102);
 
@@ -1144,7 +1128,7 @@ void making_class_block_without_bathroom(float x, float y, float z, int block_nu
     glutSolidCube(20);
     glPopMatrix();
 
-    // Pillar 8 - 10
+    // Pilar 8 - 10
     making_pillar(x + 78, y, z + 102);
     making_pillar(x + 102, y, z + 102);
     making_pillar(x + 126, y, z + 102);
@@ -1173,7 +1157,7 @@ void making_class_block_without_bathroom(float x, float y, float z, int block_nu
     glutSolidCube(20);
     glPopMatrix();
 
-    // Pillar 11 - 13
+    // Pilar 11 - 13
     making_pillar(x + 152, y, z + 102);
     making_pillar(x + 175, y, z + 102);
     making_pillar(x + 198, y, z + 102);
@@ -1330,7 +1314,6 @@ void making_auditorium(float x, float y, float z)
     glTranslatef(x, y, z);
     glScalef(0.78, 0.88, 0.78);
 
-    // --- Estrutura Básica ---
     // Parede do Fundo
     glPushMatrix();
     glTranslatef(0, 0, -50);
@@ -1351,7 +1334,7 @@ void making_auditorium(float x, float y, float z)
     glPushMatrix();
     glTranslatef(0, -5.5, 0);
     glScalef(8, 0.1, 5);
-    glColor3ub(128, 128, 128); // Cinza
+    glColor3ub(128, 128, 128);
     glutSolidCube(20);
     glPopMatrix();
 
@@ -1841,12 +1824,10 @@ void desenhaEscada(float px, float py, float pz)
     }
     glEnd();
 
-    // --- PARTE 2: CORREDOR ---
     // Aqui passamos a largura 45.0 para a sua função desenharCorredor
     desenharCorredor(largura, comp_corredor, y_atual, z_atual, base_solida);
     z_atual -= comp_corredor;
 
-    // --- PARTE 3: LANCE INFERIOR ---
     glBegin(GL_QUADS);
     for (int i = 0; i < 4; i++)
     {
@@ -1885,7 +1866,6 @@ void desenhaEscada(float px, float py, float pz)
     glPopMatrix();
 }
 
-// --- FUNÇÃO DE COLISÃO / ALTURA DO CHÃO ---
 float calcularAlturaDoChao(float x, float z)
 {
     float global_scale = 3.0;
@@ -1903,7 +1883,6 @@ float calcularAlturaDoChao(float x, float z)
 
     float altura_olhos = 30.0;
 
-    // --- MUDANÇA: LARGURA DA FÍSICA 45.0 ---
     float largura_real = 45.0 * global_scale;
 
     float meia_largura = largura_real / 2.0;
@@ -1917,7 +1896,6 @@ float calcularAlturaDoChao(float x, float z)
     float z_fim_corredor = z_fim_rampa1 - comp_corredor;
     float z_fim_total = z_fim_corredor - comp_degraus;
 
-    // --- LÓGICA DE ALTURA ---
     if (x < (escadaWorldX - meia_largura) || x > (escadaWorldX + meia_largura))
     {
         return escadaWorldY + altura_olhos;
@@ -1971,12 +1949,11 @@ void DISPLAY(void)
         skyColor = 255;
     }
 
-    glMatrixMode(GL_PROJECTION); /*glMatrixMode()- define qual matriz ser� alterada. SEMPRE defina o tipo de apresenta��o
-                               (Ortogonal ou Perspectiva) na matriz PROJECTION.*/
-    glLoadIdentity();            //"Limpa" ou "transforma" a matriz em identidade, reduzindo poss�veis erros.
+    glMatrixMode(GL_PROJECTION); // Define a matriz de projeção (Ortogonal ou Perspectiva)
+    glLoadIdentity();            //"Limpa" ou "transforma" a matriz em identidade, reduzindo possíveis erros.
     if (projecao == 1)
     {
-        glOrtho(-200, 200, -200, 200, -200, 200); // Define a proje��o como ortogonal
+        glOrtho(-200, 200, -200, 200, -200, 200); // Define a projeção como ortogonal
         if (rotacao = 1)
             glRotatef(angulox, 1.0, 0.0, 0.0);
         if (rotacao = 2)
@@ -1984,21 +1961,18 @@ void DISPLAY(void)
     }
     if (projecao == 0)
     {
-        gluPerspective(90, 1, 1, 2000); // Define a proje��o como perspectiva
+        gluPerspective(90, 1, 1, 2000); // Define a projeção como perspectiva
         if (rotacao = 1)
             glRotatef(angulox, 1.0, 0.0, 0.0);
         if (rotacao = 2)
             glRotatef(anguloy, 0.0, 1.0, 0.0);
     }
 
-    glMatrixMode(GL_MODELVIEW); /*glMatrixMode()- define qual matriz ser� alterada. SEMPRE defina a c�mera
-                               (Ortogonal ou Perspectiva) na matriz MODELVIEW (onde o desenho ocorrer�).*/
-    glLoadIdentity();           ////"Limpa" ou "transforma" a matriz em identidade, reduzindo poss�veis erros.
+    glMatrixMode(GL_MODELVIEW); // Define a matriz de visualização (onde o desenho ocorrerá)
+    glLoadIdentity();           //"Limpa" ou "transforma" a matriz em identidade, reduzindo possíveis erros.
 
-    gluLookAt(posx, posy, posz, ox, oy, oz, lx, ly, lz); // Define a pos da c�mera, para onde olha e qual eixo est� na vertical.
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  /* "limpa" um buffer particular ou combina��es de buffers,
-                                                          onde buffer � uma �rea de armazenamento para informa��es da imagem.
-                                                         Nesse caso, est� "limpando os buffers para suportarem anima��es */
+    gluLookAt(posx, posy, posz, ox, oy, oz, lx, ly, lz); // Define a pos da câmera, para onde olha e qual eixo está na vertical.
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // "Limpa" um buffer particular ou combinações de buffers, onde buffer é uma área de armazenamento para informações da imagem. Nesse caso, está "limpando os buffers para suportarem animações
     DesenharCena();
     glutSwapBuffers();
     glutPostRedisplay();
@@ -2009,7 +1983,6 @@ void desenhaChaoPersonalizado(float px, float py, float pz)
     glPushMatrix();
     glTranslatef(px, py, pz);
 
-    // --- MUDANÇA: LARGURA DO BURACO AGORA É 45.0 ---
     float largura_escada = 45.0;
 
     float x_gap_esq = -largura_escada / 2.0;
@@ -2084,7 +2057,6 @@ void desenhaChaoPersonalizado(float px, float py, float pz)
 
 void DesenharCena()
 {
-    // --- 1. BLOCOS DE PRÉDIO E ELEMENTOS DO MUNDO ---
     // Esses objetos usam a escala global e posição padrão
     glPushMatrix();
     glTranslatef(0, translado, 0);
@@ -2146,15 +2118,7 @@ void DesenharCena()
     glTranslatef(3, 0, -10);
     glPopMatrix();
 
-    // --- 2. O CHÃO E A ESCADA ---
-    // Atenção: Desenhamos eles aqui dentro para herdar a escala do mundo,
-    // mas aplicamos um ajuste de posição para encaixar na frente do prédio.
-
     glPushMatrix();
-    // AJUSTE FINO DE POSIÇÃO:
-    // X = -20 (Centraliza na frente da porta esquerda)
-    // Y = -25 (Abaixa o chão para ficar abaixo da câmera)
-    // Z = -50 (Puxa para perto ou longe do prédio)
     glTranslatef(-20, -10, -50);
     making_class_block(0, 0, -70, 1);
     making_class_block(0, -10, -280, 3);
@@ -2163,20 +2127,17 @@ void DesenharCena()
     glPopMatrix();
 
     glPushMatrix();
-    // Desenha o chão verde (com o buraco no meio)
     glTranslatef(-20, -10, -120);
 
     desenhaChaoPersonalizado(p[0], p[1], p[2]);
     desenhaEscada(p[0], p[1], p[2]);
 
     glPopMatrix();
-    // ----------------------------
 
-    glPopMatrix(); // Fim do Scale Global
+    glPopMatrix(); 
 
-    // Sol e Céu (Desenhados fora da escala para ficarem no infinito)
     glPushMatrix();
-    glRotatef(timeOfDay, 0, 0, 1);
+    glRotatef(timeOfDay, 1, 0, 0);
     making_sun();
     glPopMatrix();
 
@@ -2185,9 +2146,9 @@ void DesenharCena()
 
 void MOUSE_Button(int botao, int estado, int x, int y)
 {
-    // bot�o - recebe o c�digo do bot�o pressionado
-    // estado - recebe se est� pressionado ou n�o
-    // x, y - recebem respectivamente as posi��es do cursor do mouse
+    // botão - recebe o código do botão pressionado
+    // estado - recebe se está pressionado ou não
+    // x, y - recebem respectivamente as posições do cursor do mouse
     switch (botao)
     {
     case GLUT_LEFT_BUTTON:
@@ -2256,7 +2217,7 @@ void MOUSE(int x, int y)
         glutPostRedisplay();
     }
     y_temp = y;
-    if (x >= 500 || x <= 300 || y >= 400 || y <= 200) // delimitar uma area de acesso ao mouse de 600x450
+    if (x >= 500 || x <= 300 || y >= 400 || y <= 200) // delimitar uma área de acesso ao mouse de 600x450
     {
         glutWarpPointer(400, 300);
         glutPostRedisplay();
@@ -2314,10 +2275,8 @@ void keyboard(unsigned char tecla, int x, int y)
         break;
     }
 
-    // --- ATUALIZA A ALTURA AUTOMATICAMENTE ---
     posy = calcularAlturaDoChao(posx, posz);
 
-    // Ajusta o alvo da câmera para não "olhar para cima" ao descer
     float diff = posy - y_antigo;
     oy += diff;
 
@@ -2326,8 +2285,8 @@ void keyboard(unsigned char tecla, int x, int y)
 
 void TeclasEspeciais(int key, int x, int y)
 {
-    // Key - recebe o c�digo ASCII da tecla
-    // x, y - recebem respectivamente as posi��es do cursor do mouse (permite tratar os dois dispositivos)
+    // Key - recebe o código ASCII da tecla
+    // x, y - recebem respectivamente as posições do cursor do mouse (permite tratar os dois dispositivos)
     if (key == GLUT_KEY_PAGE_UP)
     {
         posy += 5;
@@ -2344,12 +2303,10 @@ void TeclasEspeciais(int key, int x, int y)
 int main(int argc, char **argv)
 {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_STENCIL); /*Define as caracter�sticas do espa�o vetorial.
-                                                                        //  Nesse caso, permite anima��es (sem cintila��es), cores compostas por Verm. Verde e Azul,
-                                                                //  Buffer que permite trablhar com profundidade e elimina faces escondidas.*/
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_STENCIL); //Define as características do espaço vetorial.
     glutInitWindowSize(800, 600);
     glutInitWindowPosition(10, 10);
-    glutCreateWindow("Aula 07");
+    glutCreateWindow("Bloco C");
     Inicializa();
     glutDisplayFunc(DISPLAY);
     glutKeyboardFunc(keyboard);
