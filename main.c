@@ -1111,6 +1111,32 @@ void DesenharCena ()
     glScalef(15, 15, 15);
     draw_obj_model(privada);
     glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(180, 180, 180);
+    glTranslatef(-450, 15, 15);
+    glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(15, 15, 15);
+    draw_obj_model(privada);
+    glPopMatrix();
+
+    
+    glPushMatrix();
+    glColor3ub(180, 180, 180);
+    glTranslatef(-450, 15, 45);
+    glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(15, 15, 15);
+    draw_obj_model(privada);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(180, 180, 180);
+    glTranslatef(-450, 15,75);
+    glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(15, 15, 15);
+    draw_obj_model(privada);
+    glPopMatrix();
+    
     
     glTranslatef(0, translado, 0);
     glScalef(escala, escala, escala);
