@@ -181,7 +181,7 @@ Para documentação completa, consulte [docs/TEXTURE_SYSTEM.md](docs/TEXTURE_SYS
 - **[Sistema de Texturas](docs/TEXTURE_SYSTEM.md)** - Documentação completa da API e uso de texturas
 - **[Exemplos](examples/)** - Códigos de exemplo e testes
 
-## 🏗️ Ambientes Implementados
+## Ambientes Implementados
 
 ### Salas de Aula (Blocks 1-3)
 - Cadeiras e mesas dos alunos
@@ -195,14 +195,6 @@ Para documentação completa, consulte [docs/TEXTURE_SYSTEM.md](docs/TEXTURE_SYS
 - Palco com cortina
 - Iluminação especial
 - Capacidade para múltiplos espectadores
-
-### Elementos Comuns
-- Ar-condicionado
-- Ventiladores de teto
-- Computadores
-- Extintores
-- Sanitários
-- Sistema de iluminação
 
 ## Desenvolvimento
 
@@ -243,16 +235,6 @@ assets/
 - Confirme que o executável está sendo rodado da raiz do projeto
 - Verifique os caminhos relativos nos arquivos MTL
 - Certifique-se que os assets foram baixados
-
-## Contribuindo
-
-Contribuições são bem-vindas! Para contribuir:
-
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/NovaFeature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
-4. Push para a branch (`git push origin feature/NovaFeature`)
-5. Abra um Pull Request
 
 ## Licença
 
