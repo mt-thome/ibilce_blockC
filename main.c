@@ -330,6 +330,43 @@ void making_class_block(float x, float y, float z, int block_number){
     glutSolidCube(20);
     glPopMatrix();
 
+     //banquinho
+    glPushMatrix();
+    glColor3ub(85, 85, 85);
+    glTranslatef(x-103, y-6, z+50);
+    glScalef(0.3, 0.1, 4.5);
+    glutSolidCube(20);
+    glPopMatrix();
+
+     //bebedouro
+    glPushMatrix();
+    glColor3ub(100, 100, 100);
+    glTranslatef(x-142, y-5, z+80);
+    glScalef(0.3, 0.1, 1.4);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(100, 100, 100);
+    glTranslatef(x-139, y-4, z+80);
+    glScalef(0.1, 0.2, 1.4);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(100, 100, 100);
+    glTranslatef(x-142, y-4, z+95);
+    glScalef(0.4, 0.2, 0.1);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(100, 100, 100);
+    glTranslatef(x-142, y-4, z+66);
+    glScalef(0.4, 0.2, 0.1);
+    glutSolidCube(20);
+    glPopMatrix();
+
    //Telhado banheiro
     glPushMatrix();
     glColor3ub(228, 228, 228);
