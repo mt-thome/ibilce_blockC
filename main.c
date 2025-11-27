@@ -314,6 +314,304 @@ void Inicializa(void)
     glutSetCursor(GLUT_CURSOR_NONE);
 }
 
+void desenhaMeioCilindro(float altura, float raio) {
+    float x, z, angulo;
+    
+    // Parte curva
+    glBegin(GL_QUAD_STRIP);
+    for (int i = 0; i <= 20; i++) {
+        angulo = -i * 3.14159f / 20.0f;
+        x = raio * cos(angulo);
+        z = raio * sin(angulo);
+        glNormal3f(x/raio, 0.0f, z/raio);
+        glVertex3f(x, 0.0f, z);
+        glVertex3f(x, altura, z);
+    }
+    glEnd();
+
+    // Tampa superior
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex3f(0.0f, altura, 0.0f);
+    for (int i = 0; i <= 20; i++) {
+        angulo = -i * 3.14159f / 20.0f;
+        x = raio * cos(angulo);
+        z = raio * sin(angulo);
+        glVertex3f(x, altura, z);
+    }
+    glEnd();
+}
+
+void desenhaMurinho(float comp, float larg_base, float larg_topo, float altura) {
+    float margem = (larg_topo - larg_base) / 2.0;
+    float profundidade_extra = 10.0;
+    
+    // TRUQUE PARA CORRIGIR O BUG VISUAL:
+    // Aumentamos a largura da parte de baixo em 0.1 para ela ficar 
+    // na frente da parede cinza da fundação e evitar o "Z-Fighting"
+    float sobreposicao = 0.1; 
+
+    // 1. Extensão Inferior (Com o truque da sobreposicao)
+    glBegin(GL_QUADS);
+    glColor3f(0.65, 0.3, 0.25); 
+
+    // Lateral Externa (Direita) - Empurramos um pouco pra fora (+ sobreposicao)
+    glVertex3f( (larg_base/2) + sobreposicao, 0, 0);
+    glVertex3f( (larg_base/2) + sobreposicao, 0, -comp);
+    glVertex3f( (larg_base/2) + sobreposicao, -profundidade_extra, -comp);
+    glVertex3f( (larg_base/2) + sobreposicao, -profundidade_extra, 0);
+
+    // Lateral Interna (Esquerda) - Empurramos um pouco pra fora (- sobreposicao)
+    glVertex3f( -(larg_base/2) - sobreposicao, 0, 0);
+    glVertex3f( -(larg_base/2) - sobreposicao, 0, -comp);
+    glVertex3f( -(larg_base/2) - sobreposicao, -profundidade_extra, -comp);
+    glVertex3f( -(larg_base/2) - sobreposicao, -profundidade_extra, 0);
+
+    // Frente (fechamento inferior)
+    glVertex3f( -(larg_base/2) - sobreposicao, 0, 0);
+    glVertex3f( (larg_base/2) + sobreposicao, 0, 0);
+    glVertex3f( (larg_base/2) + sobreposicao, -profundidade_extra, 0);
+    glVertex3f( -(larg_base/2) - sobreposicao, -profundidade_extra, 0);
+
+    // Trás (fechamento inferior)
+    glVertex3f( -(larg_base/2) - sobreposicao, 0, -comp);
+    glVertex3f( (larg_base/2) + sobreposicao, 0, -comp);
+    glVertex3f( (larg_base/2) + sobreposicao, -profundidade_extra, -comp);
+    glVertex3f( -(larg_base/2) - sobreposicao, -profundidade_extra, -comp);
+    glEnd();
+
+    // 2. Base do Muro (Parte visível normal)
+    glBegin(GL_QUADS);
+    // (Cor já definida)
+    
+    // Frente
+    glVertex3f(-larg_base/2, 0, 0);
+    glVertex3f( larg_base/2, 0, 0);
+    glVertex3f( larg_base/2, altura, 0);
+    glVertex3f(-larg_base/2, altura, 0);
+    
+    // Trás
+    glVertex3f(-larg_base/2, 0, -comp);
+    glVertex3f( larg_base/2, 0, -comp);
+    glVertex3f( larg_base/2, altura, -comp);
+    glVertex3f(-larg_base/2, altura, -comp);
+    
+    // Topo da base (fechamento interno)
+    glVertex3f(-larg_base/2, altura, 0);
+    glVertex3f( larg_base/2, altura, 0);
+    glVertex3f( larg_base/2, altura, -comp);
+    glVertex3f(-larg_base/2, altura, -comp);
+    
+    // Laterais (Importante desenhar para fechar o objeto)
+    // Direita
+    glVertex3f( larg_base/2, 0, 0);
+    glVertex3f( larg_base/2, 0, -comp);
+    glVertex3f( larg_base/2, altura, -comp);
+    glVertex3f( larg_base/2, altura, 0);
+    // Esquerda
+    glVertex3f(-larg_base/2, 0, 0);
+    glVertex3f(-larg_base/2, 0, -comp);
+    glVertex3f(-larg_base/2, altura, -comp);
+    glVertex3f(-larg_base/2, altura, 0);
+    glEnd();
+
+    // 3. Assento (Topo - Cinza Concreto)
+    float y_topo_fim = altura + 1.5;
+    
+    glBegin(GL_QUADS);
+    glColor3f(0.7, 0.7, 0.7); 
+    
+    // Topo onde senta
+    glVertex3f(-larg_topo/2, y_topo_fim, 0);
+    glVertex3f( larg_topo/2, y_topo_fim, 0);
+    glVertex3f( larg_topo/2, y_topo_fim, -comp);
+    glVertex3f(-larg_topo/2, y_topo_fim, -comp);
+    
+    // Bordas laterais do assento
+    // Esquerda
+    glVertex3f(-larg_topo/2, altura, 0);
+    glVertex3f(-larg_topo/2, altura, -comp);
+    glVertex3f(-larg_topo/2, y_topo_fim, -comp);
+    glVertex3f(-larg_topo/2, y_topo_fim, 0);
+    // Direita
+    glVertex3f( larg_topo/2, altura, 0);
+    glVertex3f( larg_topo/2, altura, -comp);
+    glVertex3f( larg_topo/2, y_topo_fim, -comp);
+    glVertex3f( larg_topo/2, y_topo_fim, 0);
+    // Frente e Trás do assento
+    glVertex3f(-larg_topo/2, altura, 0);
+    glVertex3f( larg_topo/2, altura, 0);
+    glVertex3f( larg_topo/2, y_topo_fim, 0);
+    glVertex3f(-larg_topo/2, y_topo_fim, 0);
+
+    glVertex3f(-larg_topo/2, altura, -comp);
+    glVertex3f( larg_topo/2, altura, -comp);
+    glVertex3f( larg_topo/2, y_topo_fim, -comp);
+    glVertex3f(-larg_topo/2, y_topo_fim, -comp);
+
+    glEnd();
+}
+
+void desenharCorredor(float largura, float comprimento, float y_piso, float z_inicio, float base_solida) {
+    float x_meia = largura / 2.0;
+    float z_fim = z_inicio - comprimento;
+    
+    // 1. Chão e Fundação
+    glBegin(GL_QUADS);
+    glColor3f(0.6, 0.6, 0.6);
+    glVertex3f(-x_meia, y_piso, z_inicio);
+    glVertex3f( x_meia, y_piso, z_inicio);
+    glVertex3f( x_meia, y_piso, z_fim);
+    glVertex3f(-x_meia, y_piso, z_fim);
+
+    glColor3f(0.35, 0.35, 0.35);
+    glVertex3f(-x_meia, y_piso, z_inicio); glVertex3f(-x_meia, y_piso, z_fim);
+    glVertex3f(-x_meia, base_solida, z_fim); glVertex3f(-x_meia, base_solida, z_inicio);
+
+    glVertex3f( x_meia, y_piso, z_inicio); glVertex3f( x_meia, y_piso, z_fim);
+    glVertex3f( x_meia, base_solida, z_fim); glVertex3f( x_meia, base_solida, z_inicio);
+    glEnd();
+
+    // 2. Murinhos
+    float larg_base = 1.5; 
+    float gap_borda = 1.0;
+    
+    // Topo = Base + gap esq + gap dir
+    float larg_topo = larg_base + gap_borda + gap_borda; // 1.5 + 1 + 1 = 3.5
+    float alt_muro = 8.0;
+    
+    // Cálculo da Posição X:
+    // Borda do corredor + Gap + Metade da largura da base (pois o pivot é no centro)
+    float pos_x_esq = -x_meia + gap_borda + (larg_base / 2.0);
+    float pos_x_dir =  x_meia - gap_borda - (larg_base / 2.0);
+
+    // Muro Esquerdo
+    glPushMatrix();
+    glTranslatef(pos_x_esq, y_piso, z_inicio);
+    desenhaMurinho(comprimento, larg_base, larg_topo, alt_muro);
+    glPopMatrix();
+
+    // Muro Direito
+    glPushMatrix();
+    glTranslatef(pos_x_dir, y_piso, z_inicio);
+    desenhaMurinho(comprimento, larg_base, larg_topo, alt_muro);
+    glPopMatrix();
+
+    // 3. Semi-Cilindros ("Orelhões")
+    // Ajustei para ficarem centralizados com a linha do muro
+    float raio_orelhao = 6.0;
+    float alt_orelhao = 18.0;
+    
+    glColor3f(0.65, 0.3, 0.25); 
+
+    // Canto 1 e 3 (Esquerda)
+    glPushMatrix();
+    glTranslatef(pos_x_esq, y_piso, z_inicio - 2.0);
+    glRotatef(90, 0, 1, 0);
+    desenhaMeioCilindro(alt_orelhao, raio_orelhao);
+    glPopMatrix();
+    
+    glPushMatrix();
+    glTranslatef(pos_x_esq, y_piso, z_fim + 2.0);
+    glRotatef(90, 0, 1, 0);
+    desenhaMeioCilindro(alt_orelhao, raio_orelhao);
+    glPopMatrix();
+
+    // Canto 2 e 4 (Direita)
+    glPushMatrix();
+    glTranslatef(pos_x_dir, y_piso, z_inicio - 2.0);
+    glRotatef(-90, 0, 1, 0);
+    desenhaMeioCilindro(alt_orelhao, raio_orelhao);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(pos_x_dir, y_piso, z_fim + 2.0);
+    glRotatef(-90, 0, 1, 0);
+    desenhaMeioCilindro(alt_orelhao, raio_orelhao);
+    glPopMatrix();
+}
+
+// --- FUNÇÃO PRINCIPAL ---
+void desenhaEscada() {
+    float largura = 30.0;
+    float altura_degrau = 4.0;
+    float prof_degrau = 6.0;
+    float comp_corredor = 70.0;
+    float base_solida = -70.0; 
+    float x_meia_largura = largura / 2.0;
+    
+    float y_atual = 0.0;
+    float z_atual = 0.0;
+
+    // --- PARTE 1: ESCADA SUPERIOR ---
+    glBegin(GL_QUADS);
+    
+    // Fechamento traseiro
+    glColor3f(0.35, 0.35, 0.35);
+    glVertex3f(-x_meia_largura, y_atual, z_atual); glVertex3f( x_meia_largura, y_atual, z_atual);
+    glVertex3f( x_meia_largura, base_solida, z_atual); glVertex3f(-x_meia_largura, base_solida, z_atual);
+
+    for (int i = 0; i < 5; i++) {
+        // Espelho
+        glColor3f(0.4, 0.4, 0.4); 
+        glVertex3f(-x_meia_largura, y_atual, z_atual); glVertex3f( x_meia_largura, y_atual, z_atual);
+        glVertex3f( x_meia_largura, y_atual - altura_degrau, z_atual); glVertex3f(-x_meia_largura, y_atual - altura_degrau, z_atual);
+        y_atual -= altura_degrau; 
+        
+        // Piso
+        glColor3f(0.6, 0.6, 0.6); 
+        glVertex3f(-x_meia_largura, y_atual, z_atual); glVertex3f( x_meia_largura, y_atual, z_atual);
+        glVertex3f( x_meia_largura, y_atual, z_atual - prof_degrau); glVertex3f(-x_meia_largura, y_atual, z_atual - prof_degrau);
+        
+        // Laterais
+        glColor3f(0.35, 0.35, 0.35); 
+        glVertex3f(-x_meia_largura, y_atual, z_atual); glVertex3f(-x_meia_largura, y_atual, z_atual - prof_degrau);
+        glVertex3f(-x_meia_largura, base_solida, z_atual - prof_degrau); glVertex3f(-x_meia_largura, base_solida, z_atual);
+        
+        glVertex3f( x_meia_largura, y_atual, z_atual); glVertex3f( x_meia_largura, y_atual, z_atual - prof_degrau);
+        glVertex3f( x_meia_largura, base_solida, z_atual - prof_degrau); glVertex3f( x_meia_largura, base_solida, z_atual);
+        
+        z_atual -= prof_degrau; 
+    }
+    glEnd(); 
+
+    // --- PARTE 2: CHAMADA DO CORREDOR ---
+    desenharCorredor(largura, comp_corredor, y_atual, z_atual, base_solida);
+    
+    // Atualiza o Z para o fim do corredor para continuar a escada
+    z_atual -= comp_corredor;
+
+    // --- PARTE 3: ESCADA INFERIOR ---
+    glBegin(GL_QUADS);
+    for (int i = 0; i < 5; i++) {
+        // Espelho
+        glColor3f(0.4, 0.4, 0.4); 
+        glVertex3f(-x_meia_largura, y_atual, z_atual); glVertex3f( x_meia_largura, y_atual, z_atual);
+        glVertex3f( x_meia_largura, y_atual - altura_degrau, z_atual); glVertex3f(-x_meia_largura, y_atual - altura_degrau, z_atual);
+        y_atual -= altura_degrau; 
+        
+        // Piso
+        glColor3f(0.6, 0.6, 0.6); 
+        glVertex3f(-x_meia_largura, y_atual, z_atual); glVertex3f( x_meia_largura, y_atual, z_atual);
+        glVertex3f( x_meia_largura, y_atual, z_atual - prof_degrau); glVertex3f(-x_meia_largura, y_atual, z_atual - prof_degrau);
+        
+        // Laterais
+        glColor3f(0.35, 0.35, 0.35); 
+        glVertex3f(-x_meia_largura, y_atual, z_atual); glVertex3f(-x_meia_largura, y_atual, z_atual - prof_degrau);
+        glVertex3f(-x_meia_largura, base_solida, z_atual - prof_degrau); glVertex3f(-x_meia_largura, base_solida, z_atual);
+        
+        glVertex3f( x_meia_largura, y_atual, z_atual); glVertex3f( x_meia_largura, y_atual, z_atual - prof_degrau);
+        glVertex3f( x_meia_largura, base_solida, z_atual - prof_degrau); glVertex3f( x_meia_largura, base_solida, z_atual);
+        
+        z_atual -= prof_degrau; 
+    }
+    
+    // Fechamento Final
+    glColor3f(0.35, 0.35, 0.35);
+    glVertex3f(-x_meia_largura, y_atual, z_atual); glVertex3f( x_meia_largura, y_atual, z_atual);
+    glVertex3f( x_meia_largura, base_solida, z_atual); glVertex3f(-x_meia_largura, base_solida, z_atual);
+    glEnd();
+}
+
 void DISPLAY(void)
 {
     timeOfDay--;
@@ -357,40 +655,145 @@ void DISPLAY(void)
     glutPostRedisplay();
 }
 
+void desenhaChaoPersonalizado() {
+    // --- CONFIGURAÇÕES IGUAIS À ESCADA ---
+    float largura_escada = 30.0; 
+    float x_gap_esq = -largura_escada / 2.0; // -15.0
+    float x_gap_dir =  largura_escada / 2.0; // +15.0
+
+    // Limites do mundo (Grama)
+    float x_mundo_min = -300.0;
+    float x_mundo_max =  300.0;
+
+    // Coordenadas Z (Profundidade) - Sincronizadas com a escada
+    float z_antes = 200.0;     // O horizonte atrás da câmera
+    float z_inicio = 0.0;      // Onde começa a descer
+    float z_plat1 = -30.0;     // Fim da primeira rampa
+    float z_plat2 = -100.0;    // Fim do corredor plano
+    float z_fim = -130.0;      // Fim da segunda rampa
+    float z_horizonte = -600.0;// O horizonte lá na frente
+
+    // Alturas Y
+    float y_topo = 0.0;
+    float y_meio = -20.0;
+    float y_fundo = -40.0;
+
+    glColor3ub(100, 200, 0); // Verde Grama
+    glNormal3f(0, 1, 0);
+
+    glBegin(GL_QUADS);
+
+    // 1. BLOCO TRASEIRO (O chão plano antes da escada, onde ficam os prédios)
+    // Vai de X min a X max, e de Z=200 até Z=0
+    glVertex3f(x_mundo_min, y_topo, z_antes);
+    glVertex3f(x_mundo_max, y_topo, z_antes);
+    glVertex3f(x_mundo_max, y_topo, z_inicio);
+    glVertex3f(x_mundo_min, y_topo, z_inicio);
+
+    // 2. BLOCO FRONTAL (O chão plano lá embaixo no final da escada)
+    // Vai de X min a X max, e de Z=-130 até Z=-600
+    glVertex3f(x_mundo_min, y_fundo, z_fim);
+    glVertex3f(x_mundo_max, y_fundo, z_fim);
+    glVertex3f(x_mundo_max, y_fundo, z_horizonte);
+    glVertex3f(x_mundo_min, y_fundo, z_horizonte);
+
+    // 3. FAIXA LATERAL ESQUERDA (Acompanha o perfil da escada)
+    // Vai do mundo_min até a beirada da escada (-15)
+    
+    // 3.1 Rampa 1
+    glVertex3f(x_mundo_min, y_topo, z_inicio);
+    glVertex3f(x_gap_esq,   y_topo, z_inicio);
+    glVertex3f(x_gap_esq,   y_meio, z_plat1);
+    glVertex3f(x_mundo_min, y_meio, z_plat1);
+
+    // 3.2 Corredor Plano
+    glVertex3f(x_mundo_min, y_meio, z_plat1);
+    glVertex3f(x_gap_esq,   y_meio, z_plat1);
+    glVertex3f(x_gap_esq,   y_meio, z_plat2);
+    glVertex3f(x_mundo_min, y_meio, z_plat2);
+
+    // 3.3 Rampa 2
+    glVertex3f(x_mundo_min, y_meio, z_plat2);
+    glVertex3f(x_gap_esq,   y_meio, z_plat2);
+    glVertex3f(x_gap_esq,   y_fundo, z_fim);
+    glVertex3f(x_mundo_min, y_fundo, z_fim);
+
+
+    // 4. FAIXA LATERAL DIREITA (Mesma coisa, do outro lado)
+    // Vai da beirada da escada (+15) até mundo_max
+    
+    // 4.1 Rampa 1
+    glVertex3f(x_gap_dir,   y_topo, z_inicio);
+    glVertex3f(x_mundo_max, y_topo, z_inicio);
+    glVertex3f(x_mundo_max, y_meio, z_plat1);
+    glVertex3f(x_gap_dir,   y_meio, z_plat1);
+
+    // 4.2 Corredor Plano
+    glVertex3f(x_gap_dir,   y_meio, z_plat1);
+    glVertex3f(x_mundo_max, y_meio, z_plat1);
+    glVertex3f(x_mundo_max, y_meio, z_plat2);
+    glVertex3f(x_gap_dir,   y_meio, z_plat2);
+
+    // 4.3 Rampa 2
+    glVertex3f(x_gap_dir,   y_meio, z_plat2);
+    glVertex3f(x_mundo_max, y_meio, z_plat2);
+    glVertex3f(x_mundo_max, y_fundo, z_fim);
+    glVertex3f(x_gap_dir,   y_fundo, z_fim);
+
+    glEnd();
+}
+
 void DesenharCena ()
 {
-    /*Crosta Terrestre*/
-    glColor3ub(100,200,0);
+    // --- 1. BLOCOS DE PRÉDIO E ELEMENTOS DO MUNDO ---
+    // Esses objetos usam a escala global e posição padrão
     glPushMatrix();
-    glTranslatef(0,-0.02,0);
-    glScalef(90,0.01,90);
-    glutSolidCube(20);
-    glPopMatrix();
-    /******/
+    glTranslatef(0, translado, 0);
+    glScalef(escala, escala, escala);
 
-    /*TEXTO Exemplo*/
+    // Texto
     glColor3ub(0,0,0);
     glPushMatrix();
     glTranslatef(-35, 41, 40.2);
     stroke_output(0, 0, "CASA ABRIDANTE EM openGL!!");
     glPopMatrix();
     
-    glTranslatef(0, translado, 0);
-    glScalef(escala, escala, escala);
-    //making_cube();
-    //making_window();
+    // Prédio Principal
+    making_class_block(0, 0, -70);
     
+    // Porta Giratória
     glPushMatrix();
     glTranslatef(-3, 0, 10);
     glRotatef(rotating, 0, 1, 0);
     glTranslatef(3, 0, -10);
-    //making_door();
+    //making_door(); // Descomente se sua função existir
     glPopMatrix();
+
+
+    // --- 2. O CHÃO E A ESCADA ---
+    // Atenção: Desenhamos eles aqui dentro para herdar a escala do mundo,
+    // mas aplicamos um ajuste de posição para encaixar na frente do prédio.
     
-    making_class_block(0, 0, -70);
+    glPushMatrix();
+    // AJUSTE FINO DE POSIÇÃO:
+    // X = -20 (Centraliza na frente da porta esquerda)
+    // Y = -25 (Abaixa o chão para ficar abaixo da câmera)
+    // Z = -50 (Puxa para perto ou longe do prédio)
+    glTranslatef(-20, -10, -50); 
 
-    //making_roof();
+    // Desenha o chão verde (com o buraco no meio)
+    desenhaChaoPersonalizado();
+    
+    // Desenha a escada cinza (encaixa no buraco)
+    glTranslatef(0, 5, 0); 
+    desenhaEscada();
+    
+    glPopMatrix(); 
+    // ----------------------------
 
+    glPopMatrix(); // Fim do Scale Global
+
+    // Sol e Céu (Desenhados fora da escala para ficarem no infinito)
     glPushMatrix();
     glRotatef(timeOfDay, 0, 0, 1);
     making_sun();
@@ -489,7 +892,6 @@ void keyboard(unsigned char tecla, int x, int y)
         posz=posz+(5*sin((anguloy+90)/57.32));
         ox=ox+(5*cos((anguloy+90)/57.32));
         oz=oz+(5*sin((anguloy+90)/57.32));
-        glutPostRedisplay();
         break;
 
     case 'w':
@@ -497,7 +899,6 @@ void keyboard(unsigned char tecla, int x, int y)
         posz=posz-(5*sin((anguloy+90)/57.32));
         ox=ox-(5*cos((anguloy+90)/57.32));
         oz=oz-(5*sin((anguloy+90)/57.32));
-        glutPostRedisplay();
         break;
 
     case 'd':
@@ -505,7 +906,6 @@ void keyboard(unsigned char tecla, int x, int y)
         posz=posz-(5*cos((anguloy+90)/57.32));
         ox=ox+(5*sin((anguloy+90)/57.32));
         oz=oz-(5*cos((anguloy+90)/57.32));
-        glutPostRedisplay();
         break;
 
     case 'a':
@@ -513,7 +913,6 @@ void keyboard(unsigned char tecla, int x, int y)
         posz=posz+(5*cos((anguloy+90)/57.32));
         ox=ox-(5*sin((anguloy+90)/57.32));
         oz=oz+(5*cos((anguloy+90)/57.32));
-        glutPostRedisplay();
         break;
     case 'e':
       rotating++;
@@ -531,6 +930,8 @@ void keyboard(unsigned char tecla, int x, int y)
     default:
         break;
     }
+
+    glutPostRedisplay();
 }
 
 void TeclasEspeciais (int key, int x, int y)
