@@ -1198,47 +1198,48 @@ void making_class_block_without_bathroom(float x, float y, float z, int block_nu
     glutSolidCube(100);
     glPopMatrix();
 
-    if (modelo_cadeira == NULL) modelo_cadeira = load_obj("assets/chair_h/chair_h2.obj");
-    for (int i = 0; i < 5; i++)
-    {
-        for (int j = 0; j < 5; j++)
-        {
-            glPushMatrix();
-            glColor3ub(255, 204, 102);
-            glTranslatef(x - (j * 10), y - 10, z + 62.5 - (i * 10));
-            glRotatef(-90, 0, 1, 0);
-            glScalef(5, 5, 5);
-            draw_obj_model(modelo_cadeira);
-            glPopMatrix();
-        }
-    }
+    // if (modelo_cadeira == NULL) modelo_cadeira = load_obj("assets/chair_h/chair_h2.obj");
+    // for (int i = 0; i < 5; i++)
+    // {
+    //     for (int j = 0; j < 5; j++)
+    //     {
+    //         glPushMatrix();
+    //         glColor3ub(255, 204, 102);
+    //         glTranslatef(w - (j * 10), y - 10, g + 62.5 - (i * 10));
+    //         glRotatef(-90, 0, 1, 0);
+    //         glScalef(5, 5, 5);
+    //         draw_obj_model(modelo_cadeira);
+    //         glPopMatrix();
+    //     }
+    // }
 
-    for (int i = 0; i < 5; i++)
-    {
-        for (int j = 0; j < 5; j++)
-        {
-            glPushMatrix();
-            glColor3ub(255, 204, 102);
-            glTranslatef(x - (j * 10), y - 10, z + 112.5 - (i * 10));
-            glScalef(5, 5, 5);
-            draw_obj_model(modelo_cadeira);
-            glPopMatrix();
-        }
-    }
+    // for (int i = 0; i < 5; i++)
+    // {
+    //     for (int j = 0; j < 5; j++)
+    //     {
+    //         glPushMatrix();
+    //         glColor3ub(255, 204, 102);
+    //         glTranslatef(w - (j * 10), y - 10, g + 112.5 - (i * 10));
+    //         glRotatef(-90, 0, 1, 0);
+    //         glScalef(5, 5, 5);
+    //         draw_obj_model(modelo_cadeira);
+    //         glPopMatrix();
+    //     }
+    // }
 
-    for (int i = 0; i < 5; i++)
-    {
-        for (int j = 0; j < 5; j++)
-        {
-            glPushMatrix();
-            glColor3ub(255, 204, 102);
-            glTranslatef(x - (j * 10), y - 10, z + 162.5 - (i * 10));
-            glRotatef(-90, 0, 1, 0);
-            glScalef(5, 5, 5);
-            draw_obj_model(modelo_cadeira);
-            glPopMatrix();
-        }
-    }
+    // for (int i = 0; i < 5; i++)
+    // {
+    //     for (int j = 0; j < 5; j++)
+    //     {
+    //         glPushMatrix();
+    //         glColor3ub(255, 204, 102);
+    //         glTranslatef(w - (j * 10), y - 10, g + 162.5 - (i * 10));
+    //         glRotatef(-90, 0, 1, 0);
+    //         glScalef(5, 5, 5);
+    //         draw_obj_model(modelo_cadeira);
+    //         glPopMatrix();
+    //     }
+    // }
 
     if (modelo_mesa == NULL) modelo_mesa = load_obj("assets/deskschool/school chair.obj");
     for (int i = 0; i < 5; i++)
@@ -2077,51 +2078,103 @@ void DesenharCena()
     if (modelo_privada == NULL) modelo_privada = load_obj("assets/toilet/toilet.obj");
     glPushMatrix();
     glColor3ub(180, 180, 180);
-    glTranslatef(-450, 15, -190);
+    glTranslatef(-175, -10, -25);
     glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
-    glScalef(15, 15, 15);
+    glScalef(7, 7, 7);
     draw_obj_model(modelo_privada);
     glPopMatrix();
 
     glPushMatrix();
     glColor3ub(180, 180, 180);
-    glTranslatef(-450, 15, -160);
+    glTranslatef(-175, -10, -35);
     glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
-    glScalef(15, 15, 15);
+    glScalef(7, 7, 7);
     draw_obj_model(modelo_privada);
     glPopMatrix();
 
     glPushMatrix();
     glColor3ub(180, 180, 180);
-    glTranslatef(-450, 15, -130);
+    glTranslatef(-175, -10, -45);
     glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
-    glScalef(15, 15, 15);
+    glScalef(7, 7, 7);
+    draw_obj_model(modelo_privada);
+    glPopMatrix();
+
+    //privadas banheiro masculino de cima
+    glPushMatrix();
+    glColor3ub(180, 180, 180);
+    glTranslatef(-175, -10, -95);
+    glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(7, 7, 7);
     draw_obj_model(modelo_privada);
     glPopMatrix();
 
     glPushMatrix();
     glColor3ub(180, 180, 180);
-    glTranslatef(-450, 15, 15);
+    glTranslatef(-175, -10, -105);
     glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
-    glScalef(15, 15, 15);
+    glScalef(7, 7, 7);
     draw_obj_model(modelo_privada);
     glPopMatrix();
 
     glPushMatrix();
     glColor3ub(180, 180, 180);
-    glTranslatef(-450, 15, 45);
+    glTranslatef(-175, -10, -115);
     glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
-    glScalef(15, 15, 15);
+    glScalef(7, 7, 7);
+    draw_obj_model(modelo_privada);
+    glPopMatrix();
+
+    //privadas banheiro de baixo
+    //feminino de baixo
+    glPushMatrix();
+    glColor3ub(180, 180, 180);
+    glTranslatef(-175, -25, -255);
+    glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(7, 7, 7);
     draw_obj_model(modelo_privada);
     glPopMatrix();
 
     glPushMatrix();
     glColor3ub(180, 180, 180);
-    glTranslatef(-450, 15, 75);
+    glTranslatef(-175, -25, -245);
     glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
-    glScalef(15, 15, 15);
+    glScalef(7, 7, 7);
     draw_obj_model(modelo_privada);
     glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(180, 180, 180);
+    glTranslatef(-175, -25, -235);
+    glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(7, 7, 7);
+    draw_obj_model(modelo_privada);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(180, 180, 180);
+    glTranslatef(-175, -25, -325);
+    glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(7, 7, 7);
+    draw_obj_model(modelo_privada);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(180, 180, 180);
+    glTranslatef(-175, -25, -315);
+    glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(7, 7, 7);
+    draw_obj_model(modelo_privada);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(180, 180, 180);
+    glTranslatef(-175, -25, -305);
+    glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(7, 7, 7);
+    draw_obj_model(modelo_privada);
+    glPopMatrix();
+    
 
     // Porta Giratória
     glPushMatrix();
