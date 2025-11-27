@@ -11,7 +11,7 @@
 
 #define translado 30
 #define escala 3
-int rotating=0, timeOfDay=0, skyColor=255;
+int rotating=0, timeOfDay=0, skyColor=255, chairList=0;
 
 void making_enviroment();
 void making_sun();
@@ -53,6 +53,81 @@ void making_sky(){
   glColor3ub(0, skyColor, skyColor);
   glutSolidCube(2000);
   glPopMatrix();
+}
+
+// --- FUNÇÃO PORTA DUPLA ---
+void making_double_door(float x, float y, float z){
+    glPushMatrix();
+    glTranslatef(x, y, z);
+    
+    // 1. Batente / Fundo Escuro
+    glPushMatrix();
+    glColor3ub(80, 80, 80); 
+    glScalef(0.65, 1.35, 0.05); 
+    glutSolidCube(20);
+    glPopMatrix();
+
+    // 2. Folha da Esquerda
+    glPushMatrix();
+    glTranslatef(-3.2, 0, 0.2); 
+    glColor3ub(185, 182, 181); 
+    glScalef(0.3, 1.25, 0.05);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    // 3. Folha da Direita
+    glPushMatrix();
+    glTranslatef(3.2, 0, 0.2); 
+    glColor3ub(185, 182, 181); 
+    glScalef(0.3, 1.25, 0.05);
+    glutSolidCube(20);
+    glPopMatrix();
+
+    // 4. Detalhes / Maçanetas
+    glPushMatrix();
+    glTranslatef(-0.5, 0, 0.8); 
+    glColor3ub(255, 215, 0); 
+    glutSolidSphere(0.4, 10, 10);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.5, 0, 0.8); 
+    glColor3ub(255, 215, 0); 
+    glutSolidSphere(0.4, 10, 10);
+    glPopMatrix();
+
+    glPopMatrix();
+}
+
+// Desenha Cadeira
+void draw_auditorium_chair(float x, float y, float z, float rotY) {
+    if (chairList == 0) {
+        chairList = glGenLists(1);
+        glNewList(chairList, GL_COMPILE);
+
+        // 1. Pernas 
+        glColor3ub(50, 50, 50);
+        glPushMatrix(); glTranslatef(-1.2, 1.0, -1.2); glScalef(0.4, 2.0, 0.4); glutSolidCube(1.0); glPopMatrix();
+        glPushMatrix(); glTranslatef(1.2, 1.0, -1.2); glScalef(0.4, 2.0, 0.4); glutSolidCube(1.0); glPopMatrix();
+        glPushMatrix(); glTranslatef(-1.2, 1.0, 1.2); glScalef(0.4, 2.0, 0.4); glutSolidCube(1.0); glPopMatrix();
+        glPushMatrix(); glTranslatef(1.2, 1.0, 1.2); glScalef(0.4, 2.0, 0.4); glutSolidCube(1.0); glPopMatrix();
+
+        // 2. Assento
+        glColor3ub(160, 40, 40);
+        glPushMatrix(); glTranslatef(0, 2.2, 0); glScalef(3.0, 0.4, 3.2); glutSolidCube(1.0); glPopMatrix();
+
+        // 3. Encosto
+        glPushMatrix(); glTranslatef(0, 4.0, -1.4); glScalef(3.0, 3.0, 0.4); glutSolidCube(1.0); glPopMatrix();
+        
+        glEndList();
+    }
+
+    glPushMatrix();
+    glTranslatef(x, y, z);
+    glRotatef(rotY, 0, 1, 0);
+    glScalef(1.2, 1.2, 1.2); 
+    glCallList(chairList);
+    glPopMatrix();
 }
 
 void making_door(float x, float y, float z){
@@ -439,7 +514,7 @@ void making_class_block(float x, float y, float z, int block_number){
     glutSolidCube(100);
     glPopMatrix();
 
-    OBJModel *cadeira = load_obj("chair.h/chair_h.obj");
+    OBJModel *cadeira = load_obj("assets/chair_h/chair_h.obj");
     for(int i=0; i<5;i++){
         for(int j=0; j<5;j++){
             glPushMatrix();
@@ -476,7 +551,7 @@ void making_class_block(float x, float y, float z, int block_number){
         }
     }
 
-    OBJModel *mesa_cadeira = load_obj("deskschool/school chair.obj");
+    OBJModel *mesa_cadeira = load_obj("assets/deskschool/school chair.obj");
     for(int i=0; i<5;i++){
         for(int j=0; j<3;j++){
             glPushMatrix();
@@ -499,7 +574,7 @@ void making_class_block(float x, float y, float z, int block_number){
         }
     }
 
-    OBJModel *lousa = load_obj("chalkboard/ChalkBoard.obj");
+    OBJModel *lousa = load_obj("assets/chalkboard/ChalkBoard.obj");
     glPushMatrix();
     glColor3ub(24, 104, 7);
     glTranslatef(x+30, y+4, z+99);
@@ -548,6 +623,162 @@ void making_class_block(float x, float y, float z, int block_number){
     glTranslatef(x-86, y+4, z+102);
     glScalef(0.15, 0.12, 1);
     stroke_output(0, 0, "Bloco %d", block_number);
+    glPopMatrix();
+}
+
+void making_auditorium(float x, float y, float z){
+    glPushMatrix();
+    
+    glTranslatef(x, y, z);
+    glScalef(0.78, 0.88, 0.78); 
+
+    // --- Estrutura Básica ---
+    // Parede do Fundo
+    glPushMatrix(); glTranslatef(0, 0, -50); glScalef(8, 3, 0.05); glColor3ub(209, 80, 6); glutSolidCube(20); glPopMatrix();
+    
+    // Teto
+    glPushMatrix(); 
+    glTranslatef(0, 29, 0); 
+    glScalef(8, 0.1, 5); 
+    glColor3ub(228, 228, 228);
+    glutSolidCube(20); 
+    glPopMatrix();
+
+    // Piso do Auditório
+    glPushMatrix();
+    glTranslatef(0, -5.5, 0);
+    glScalef(8, 0.1, 5);      
+    glColor3ub(128, 128, 128); // Cinza
+    glutSolidCube(20);
+    glPopMatrix();
+
+    // Paredes Laterais
+    glPushMatrix(); glTranslatef(-80, 0, 0); glScalef(0.05, 3, 5); glColor3ub(209, 80, 6); glutSolidCube(20); glPopMatrix();
+    glPushMatrix(); glTranslatef(80, 0, 0); glScalef(0.05, 3, 5); glColor3ub(209, 80, 6); glutSolidCube(20); glPopMatrix();
+    
+    // Fachada Frontal
+    glPushMatrix(); glTranslatef(-37.5, 0, 50); glScalef(4.25, 3, 0.05); glColor3ub(209, 80, 6); glutSolidCube(20); glPopMatrix();
+    glPushMatrix(); glTranslatef(52.5, 0, 50); glScalef(2.75, 3, 0.05); glColor3ub(209, 80, 6); glutSolidCube(20); glPopMatrix();
+    glPushMatrix(); glTranslatef(15, 20, 50); glScalef(1.0, 1, 0.05); glColor3ub(209, 80, 6); glutSolidCube(20); glPopMatrix();
+
+    // Pilares
+    making_pillar(-80, 0, 52); making_pillar(80, 0, 52);  
+    making_pillar(-80, 0, -48); making_pillar(80, 0, -48);
+    making_pillar(2, 0, 52); 
+    making_pillar(28, 0, 52);
+
+    // Portas Duplas
+    making_double_door(9, -3.5, 49); 
+    making_double_door(21, -3.5, 49);  
+
+    // --- LOUSA (VERDE ESCURO) ---
+    glPushMatrix();
+    glTranslatef(79, 8, 0); 
+    glPushMatrix(); glScalef(0.1, 0.8, 2.5); glColor3ub(47, 69, 56); glutSolidCube(20); glPopMatrix(); // Moldura
+    glPushMatrix(); glTranslatef(-0.2, 0, 0); glScalef(0.05, 0.75, 2.45); glColor3ub(30, 90, 30); glutSolidCube(20); glPopMatrix(); // Tela
+    glPopMatrix();
+
+    // --- MESA E CADEIRA DO PROFESSOR ---
+    // Mesa em frente à lousa
+    glPushMatrix();
+    glTranslatef(55, -2.0, 0); 
+    
+    // Tampo da Mesa (Reduzido 3.0 comprimento, 1.2 largura)
+    glPushMatrix();
+    glScalef(1.2, 0.1, 3.0); 
+    glColor3ub(139, 69, 19); // Madeira Marrom
+    glutSolidCube(10);
+    glPopMatrix();
+
+    // Pé Esquerdo
+    glPushMatrix();
+    glTranslatef(0, -1.5, -11);
+    glScalef(1.0, 3.0, 0.5);
+    glColor3ub(100, 50, 0);
+    glutSolidCube(1);
+    glPopMatrix();
+
+    // Pé Direito
+    glPushMatrix();
+    glTranslatef(0, -1.5, 11);
+    glScalef(1.0, 3.0, 0.5);
+    glColor3ub(100, 50, 0);
+    glutSolidCube(1);
+    glPopMatrix();
+    glPopMatrix(); // Fim Mesa
+
+    // Cadeira do Professor (Atrás da mesa)
+    draw_auditorium_chair(62, -5.2f, 0, -90.0f);
+
+
+    // --- DESKTOP NO CANTO ---
+    glPushMatrix();
+    glTranslatef(75, -5.0, -40); // Base no chão
+
+    // Mesa do PC
+    glPushMatrix();
+    glTranslatef(0, 2.5, 0);
+    glScalef(2.0, 0.1, 3.0);
+    glColor3ub(50, 50, 50); // Cinza escuro
+    glutSolidCube(5);
+    glPopMatrix();
+    
+    // Pé da Mesa PC
+    glPushMatrix();
+    glTranslatef(4, 0, 0); // Perto da parede
+    glScalef(0.2, 2.5, 2.8);
+    glutSolidCube(5);
+    glPopMatrix();
+
+    // Gabinete (Desktop Tower) - Preto
+    glPushMatrix();
+    glTranslatef(-2, 3.5, -4); // Em cima da mesa, canto
+    glScalef(0.8, 1.5, 1.5);
+    glColor3ub(10, 10, 10); // Preto Quase total
+    glutSolidCube(3);
+    glPopMatrix();
+
+    // Monitor - Preto
+    glPushMatrix();
+    glTranslatef(-1, 3.5, 2); 
+    glRotatef(-45, 0, 1, 0);  // Virado para o usuário
+    
+    // Tela
+    glPushMatrix();
+    glScalef(0.2, 1.2, 1.8);
+    glColor3ub(20, 20, 20); 
+    glutSolidCube(3);
+    glPopMatrix();
+    
+    // Base Monitor
+    glPushMatrix();
+    glTranslatef(0, -1.8, 0);
+    glScalef(0.5, 0.1, 0.8);
+    glColor3ub(20, 20, 20);
+    glutSolidCube(3);
+    glPopMatrix();
+    glPopMatrix(); // Fim Monitor
+
+    glPopMatrix(); // Fim Setup PC
+
+
+    // --- CADEIRAS DA AUDIÊNCIA ---
+    float floorY = -5.2f; 
+    
+    float startZ = -40.0f; 
+    float endZ = 40.0f;   
+    float stepZ = 10.0f;   
+
+    float startX = -70.0f; 
+    float endX = 25.0f;    
+    float stepX = 9.0f;    
+
+    for (float xPos = startX; xPos <= endX; xPos += stepX) {
+        for (float zPos = startZ; zPos <= endZ; zPos += stepZ) {
+            draw_auditorium_chair(xPos, floorY, zPos, 90.0f);
+        }
+    }
+
     glPopMatrix();
 }
 
@@ -645,6 +876,7 @@ void DesenharCena ()
     glPopMatrix();
     
     making_class_block(0, 0, -70, 1);
+    making_auditorium(-220, 0, -8);
 
     //making_roof();
 
