@@ -1,0 +1,26 @@
+# Blender 4.5.3 LTS MTL File: 'None'
+# www.blender.org
+
+newmtl 01___Default
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd textures/01___Default_albedo.jpeg
+map_Ns textures/01___Default_roughness.jpeg
+map_refl textures/01___Default_metallic.jpeg
+map_Bump -bm 1.000000 textures/01___Default_normal.png
+
+newmtl 02___Default
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd textures/02___Default_albedo.jpeg
+map_Ns textures/02___Default_roughness.jpeg
+map_refl textures/02___Default_metallic.jpeg
+map_Bump -bm 1.000000 textures/02___Default_normal.png

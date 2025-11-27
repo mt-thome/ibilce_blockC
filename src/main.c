@@ -738,7 +738,7 @@ void making_class_block(float x, float y, float z, int block_number){
     glutSolidCube(100);
     glPopMatrix();
 
-    OBJModel *cadeira = load_obj("../assets/chair_h/chair_h.obj");
+    OBJModel *cadeira = load_obj("assets/chair_h/chair_h2.obj");
     for(int i=0; i<5;i++){
         for(int j=0; j<5;j++){
             glPushMatrix();
@@ -775,7 +775,7 @@ void making_class_block(float x, float y, float z, int block_number){
         }
     }
 
-    OBJModel *mesa_cadeira = load_obj("../assets/deskschool/school chair.obj");
+    OBJModel *mesa_cadeira = load_obj("assets/deskschool/school chair.obj");
     for(int i=0; i<5;i++){
         for(int j=0; j<3;j++){
             glPushMatrix();
@@ -798,7 +798,7 @@ void making_class_block(float x, float y, float z, int block_number){
         }
     }
 
-    OBJModel *lousa = load_obj("../assets/chalkboard/ChalkBoard.obj");
+    OBJModel *lousa = load_obj("assets/chalkboard/ChalkBoard.obj");
     glPushMatrix();
     glColor3ub(24, 104, 7);
     glTranslatef(x+30, y+4, z+99);
@@ -1493,7 +1493,7 @@ void DesenharCena ()
     glTranslatef(0, translado, 0);
     glScalef(escala, escala, escala);
 
-    OBJModel *privada = load_obj("../assets/toilet/toilet.obj");
+    OBJModel *privada = load_obj("assets/toilet/toilet.obj");
     glPushMatrix();
     glColor3ub(180, 180, 180);
     glTranslatef(-450, 15, -190);
