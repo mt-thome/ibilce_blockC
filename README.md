@@ -27,11 +27,11 @@ ibilce_blockC/
 │   └── stb_image.h       # Biblioteca de imagens
 ├── examples/              # Exemplos e testes
 │   └── test_texture.c    # Teste de carregamento de texturas
-├── assets/                # Modelos 3D e texturas (não versionados)
+├── assets/                # Modelos 3D e texturas (Git LFS)
 │   ├── chair_h/          # Cadeira com texturas
-│   ├── pc/               # Computador
-│   ├── fan/              # Ventilador
-│   └── ...               # Outros modelos
+│   ├── chalkboard/       # Lousa para sala de aula
+│   ├── deskschool/       # Mesa escolar
+│   └── toilet/           # Sanitário
 ├── docs/                  # Documentação
 │   └── TEXTURE_SYSTEM.md # Documentação do sistema de texturas
 ├── build/                 # Arquivos de compilação
@@ -48,6 +48,7 @@ ibilce_blockC/
 - **OpenGL** e **GLU**
 - **FreeGLUT**
 - **Make** (opcional)
+- **Git LFS** (para baixar assets)
 
 #### Instalação no Linux (Ubuntu/Debian):
 ```bash
@@ -61,13 +62,32 @@ sudo apt-get install freeglut3-dev libglu1-mesa-dev
 sudo pacman -S base-devel freeglut mesa
 ```
 
-### Download dos Assets
+#### Instalação do Git LFS:
+```bash
+# Ubuntu/Debian
+sudo apt-get install git-lfs
 
-**IMPORTANTE:** Os assets não estão incluídos no repositório Git devido ao tamanho.
+# Arch Linux
+sudo pacman -S git-lfs
 
-**[Download dos Assets (Google Drive)](https://drive.google.com/drive/folders/1PoGKk-z51i-leNRsoNhrTegFYwa-ZcSy?usp=drive_link)**
+# Inicializar Git LFS
+git lfs install
+```
 
-Após o download, extraia a pasta `assets` na raiz do projeto.
+### Assets
+
+Os assets 3D estão versionados usando **Git LFS** (Large File Storage) para gerenciar arquivos grandes de forma eficiente. A pasta `assets` contém modelos otimizados e suas texturas.
+
+**Modelos incluídos:**
+- `chair_h/` - Cadeira com texturas de madeira e metal
+- `chalkboard/` - Lousa para sala de aula
+- `deskschool/` - Mesa escolar
+- `toilet/` - Sanitário completo
+
+Ao clonar o repositório, o Git LFS baixará automaticamente os arquivos grandes. Se você já tem o repositório clonado, execute:
+```bash
+git lfs pull
+```
 
 ### Compilação
 
